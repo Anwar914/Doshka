@@ -1,0 +1,1212 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>مهندس+ | دورات هندسية أونلاين</title>
+  <meta name="description" content="مهندس+ — دورات أونلاين عملية لطلاب الهندسة: دوائر كهربائية، تصميم ميكانيكي، وبرمجة للمهندسين، بشرح عربي واضح ومشاريع حقيقية." />
+  <meta name="theme-color" content="#0E1A2B" />
+
+  <!-- Mark the document as "motion OK" as early as possible, so intro elements
+       can start hidden without a flash. Removed again in JS if GSAP fails. -->
+  <script>
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('motion-ok');
+    }
+  </script>
+
+  <!-- Fonts: El Messiri (display) + IBM Plex Sans Arabic (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =========================================================
+       1. DESIGN TOKENS
+       Three core colours: paper (light), ink (dark), accent.
+       Everything else is derived from them with alpha.
+       ========================================================= */
+    :root {
+      --paper: #F6F3EE;
+      --ink: #0E1A2B;
+      --accent: #E2A13B;
+
+      --paper-rgb: 246 243 238;
+      --ink-rgb: 14 26 43;
+      --accent-rgb: 226 161 59;
+
+      --surface: #FFFFFF;                       /* card surface on paper */
+      --text: var(--ink);
+      --text-soft: rgb(var(--ink-rgb) / .66);
+      --line: rgb(var(--ink-rgb) / .09);
+
+      --font-display: "El Messiri", "Segoe UI", serif;
+      --font-body: "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+      --radius-sm: 12px;
+      --radius: 22px;
+      --radius-lg: 32px;
+
+      /* Layered, very soft shadows read as "expensive" */
+      --shadow-sm: 0 1px 2px rgb(var(--ink-rgb) / .04), 0 4px 12px rgb(var(--ink-rgb) / .05);
+      --shadow:    0 2px 4px rgb(var(--ink-rgb) / .03), 0 12px 32px rgb(var(--ink-rgb) / .08);
+      --shadow-lg: 0 4px 8px rgb(var(--ink-rgb) / .04), 0 30px 60px -12px rgb(var(--ink-rgb) / .18);
+
+      --container: 1180px;
+      --gutter: clamp(16px, 5vw, 40px);
+      --section-y: clamp(88px, 12vw, 160px);
+      --ease-out: cubic-bezier(.22, 1, .36, 1);
+    }
+
+    /* =========================================================
+       2. BASE
+       ========================================================= */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 1.0625rem;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      line-height: 1.2;
+      margin: 0;
+      letter-spacing: 0;
+    }
+    p { margin: 0; }
+    a { color: inherit; text-decoration: none; }
+    svg { display: block; }
+    button { font: inherit; color: inherit; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+    .container { width: min(100% - 2 * var(--gutter), var(--container)); margin-inline: auto; }
+    .section { padding-block: var(--section-y); }
+    .visually-hidden {
+      position: absolute !important; width: 1px; height: 1px; overflow: hidden;
+      clip: rect(0 0 0 0); white-space: nowrap;
+    }
+
+    /* Small uppercase-style label above headings */
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: .6em;
+      font-size: .875rem; font-weight: 600; color: var(--text-soft);
+    }
+    .eyebrow::before {
+      content: ""; width: 22px; height: 2px; border-radius: 2px; background: var(--accent);
+    }
+    .section-head { max-width: 640px; margin-bottom: clamp(40px, 6vw, 72px); }
+    .section-head h2 { font-size: clamp(2rem, 4.6vw, 3.25rem); margin-top: 14px; }
+    .section-head p { color: var(--text-soft); margin-top: 16px; font-size: 1.125rem; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .6em;
+      min-height: 52px; padding: 0 1.6em;
+      border-radius: 999px; border: 0; cursor: pointer;
+      font-weight: 600; font-size: 1rem;
+      transition: transform .35s var(--ease-out), box-shadow .35s var(--ease-out), background-color .25s;
+    }
+    .btn svg { width: 1.15em; height: 1.15em; flex: none; }
+    .btn--ink { background: var(--ink); color: var(--paper); box-shadow: 0 10px 24px -10px rgb(var(--ink-rgb) / .6); }
+    .btn--accent { background: var(--accent); color: var(--ink); box-shadow: 0 12px 28px -12px rgb(var(--accent-rgb) / .9); }
+    .btn--ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .16); }
+    .btn:hover { transform: translateY(-2px); }
+    .btn--ink:hover { box-shadow: 0 16px 30px -12px rgb(var(--ink-rgb) / .7); }
+    .btn--ghost:hover { box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .4); }
+    .btn:active { transform: translateY(0); }
+
+    /* =========================================================
+       3. HEADER
+       ========================================================= */
+    .site-header {
+      position: fixed; inset: 0 0 auto 0; z-index: 50;
+      transition: background-color .4s, box-shadow .4s, backdrop-filter .4s;
+    }
+    .site-header.is-scrolled {
+      background: rgb(var(--paper-rgb) / .82);
+      backdrop-filter: saturate(1.4) blur(14px);
+      -webkit-backdrop-filter: saturate(1.4) blur(14px);
+      box-shadow: 0 1px 0 var(--line);
+    }
+    .site-header.on-dark { background: rgb(var(--ink-rgb) / .78); box-shadow: 0 1px 0 rgb(var(--paper-rgb) / .08); color: var(--paper); }
+    .site-header.on-dark .nav { color: rgb(var(--paper-rgb) / .65); }
+    .site-header.on-dark .nav a:hover { color: var(--paper); }
+    .site-header.on-dark .btn--ink { background: var(--accent); color: var(--ink); box-shadow: none; }
+    .site-header .container { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+    .logo { font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; display: inline-flex; align-items: baseline; gap: 2px; }
+    .logo b { color: var(--accent); font-size: 1.15em; line-height: 0; }
+    .nav { display: none; gap: 32px; font-size: .95rem; color: var(--text-soft); }
+    .nav a { transition: color .2s; }
+    .nav a:hover { color: var(--ink); }
+    .site-header .btn { min-height: 42px; padding: 0 1.2em; font-size: .9rem; }
+
+    /* =========================================================
+       4. HERO
+       ========================================================= */
+    .hero { position: relative; padding: 120px 0 72px; overflow: hidden; }
+    .hero .container { display: grid; gap: 48px; align-items: center; }
+    .hero__copy { position: relative; z-index: 2; }
+    .hero__badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 6px 14px 6px 6px; border-radius: 999px;
+      background: var(--surface); box-shadow: var(--shadow-sm);
+      font-size: .875rem; color: var(--text-soft);
+    }
+    .hero__badge span {
+      background: var(--ink); color: var(--paper); border-radius: 999px;
+      padding: 2px 10px; font-size: .8rem; font-weight: 600;
+    }
+    .hero h1 {
+      font-size: clamp(2.6rem, 9vw, 5.2rem);
+      margin-top: 22px;
+      line-height: 1.15;
+    }
+    .hero h1 .line { display: block; overflow: hidden; padding-bottom: .08em; }
+    .hero h1 .line > span { display: inline-block; }
+    .hero h1 em { font-style: normal; position: relative; white-space: nowrap; }
+    .hero h1 em::after {             /* hand-drawn style underline */
+      content: ""; position: absolute; inset-inline: -2%; bottom: .08em; height: .2em;
+      background: rgb(var(--accent-rgb) / .45); border-radius: 999px; z-index: -1;
+    }
+    .hero__lead { font-size: clamp(1.05rem, 2.4vw, 1.25rem); color: var(--text-soft); max-width: 520px; margin-top: 22px; }
+    .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+    .hero__trust { display: flex; align-items: center; gap: 14px; margin-top: 36px; font-size: .9rem; color: var(--text-soft); }
+    .avatars { display: flex; }
+    .avatars i {
+      width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--paper);
+      margin-inline-start: -10px; display: grid; place-items: center;
+      font-style: normal; font-size: .75rem; font-weight: 600; color: var(--paper);
+    }
+    .avatars i:first-child { margin-inline-start: 0; }
+    .avatars i:nth-child(1) { background: var(--ink); }
+    .avatars i:nth-child(2) { background: #3a4657; }
+    .avatars i:nth-child(3) { background: var(--accent); color: var(--ink); }
+    .avatars i:nth-child(4) { background: #6b7482; }
+
+    .hero__visual { position: relative; width: min(100%, 560px); margin-inline: auto; }
+    .hero__visual svg { width: 100%; height: auto; overflow: visible; }
+
+    /* Hidden starting states, only when motion is allowed (see <head> script) */
+    .motion-ok [data-intro],
+    .motion-ok .h-halo, .motion-ok .h-plate, .motion-ok .h-chip, .motion-ok .h-dim { opacity: 0; }
+
+    /* =========================================================
+       5. STORY (pinned, scrubbed)
+       Default = static, readable layout (reduced motion / no JS).
+       .is-animated = pinned stage with stacked steps.
+       ========================================================= */
+    .story { background: var(--ink); color: var(--paper); position: relative; }
+    .story .eyebrow { color: rgb(var(--paper-rgb) / .6); }
+    .story__stage { padding-block: var(--section-y); }
+    .story__layout { display: grid; gap: 40px; align-items: center; }
+    .story__visual {
+      position: relative; width: min(100%, 520px); margin-inline: auto;
+      border-radius: var(--radius-lg); overflow: hidden;
+      box-shadow: 0 40px 80px -30px rgb(0 0 0 / .6), inset 0 0 0 1px rgb(var(--paper-rgb) / .08);
+    }
+    .story__visual svg { width: 100%; height: auto; direction: ltr; }
+    .story__steps { display: grid; gap: 40px; }
+    .step__num {
+      font-family: var(--font-display); font-size: .95rem; color: var(--accent);
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .step__num::after { content: ""; width: 40px; height: 1px; background: rgb(var(--accent-rgb) / .5); }
+    .step h3 { font-size: clamp(1.75rem, 4vw, 2.75rem); margin-top: 10px; }
+    .step p { color: rgb(var(--paper-rgb) / .68); margin-top: 14px; max-width: 460px; font-size: 1.075rem; }
+    .step__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .step__tags span {
+      font-size: .8rem; padding: 4px 12px; border-radius: 999px;
+      background: rgb(var(--paper-rgb) / .06); box-shadow: inset 0 0 0 1px rgb(var(--paper-rgb) / .1);
+      color: rgb(var(--paper-rgb) / .8);
+    }
+    .story__progress { display: none; }
+    .story:not(.is-animated) .s-construct { display: none; }   /* static view shows the finished part only */
+
+    /* --- animated (pinned) layout --- */
+    .story.is-animated .story__stage {
+      height: 100vh; height: 100svh; padding-block: 0;
+      display: flex; align-items: center;
+    }
+    .story.is-animated .story__layout { gap: 24px; }
+    .story.is-animated .story__visual { width: min(100%, 44svh, 520px); }
+    .story.is-animated .story__steps { display: grid; }
+    .story.is-animated .step { grid-area: 1 / 1; }       /* stack the three steps */
+    .story.is-animated .story__progress {
+      display: flex; gap: 8px; margin-top: 28px;
+    }
+    .story__progress i {
+      position: relative; flex: 1; max-width: 80px; height: 3px; border-radius: 3px;
+      background: rgb(var(--paper-rgb) / .12); overflow: hidden;
+    }
+    .story__progress i b {
+      position: absolute; inset: 0; background: var(--accent);
+      transform: scaleX(0); transform-origin: right center;   /* RTL fill */
+    }
+    .story.is-animated .story__head { display: none; }
+    .story.is-animated .step p { font-size: 1rem; }
+
+    /* =========================================================
+       6. COURSES — 3D flip cards
+       ========================================================= */
+    .courses__grid { display: grid; gap: 24px; }
+    .course { perspective: 1600px; }
+    .course__inner {
+      position: relative; display: grid;  /* faces share one grid cell -> card height = tallest face */
+      transform-style: preserve-3d;
+      transition: transform .9s var(--ease-out);
+    }
+    .course__face {
+      grid-area: 1 / 1;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      border-radius: var(--radius-lg); background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 14px; display: flex; flex-direction: column;
+    }
+    .course__back {
+      transform: rotateY(180deg);
+      background: var(--ink); color: var(--paper);
+      padding: 28px 26px 22px;
+    }
+    /* Flip triggers: tap/click (.is-flipped), keyboard focus, hover on fine pointers */
+    .course.is-flipped .course__inner,
+    .course:has(:focus-visible) .course__inner { transform: rotateY(180deg); }
+    @media (hover: hover) and (pointer: fine) {
+      .course:hover .course__inner { transform: rotateY(180deg); }
+    }
+
+    .course__art {
+      border-radius: calc(var(--radius-lg) - 8px); aspect-ratio: 3 / 2;
+      display: grid; place-items: center; overflow: hidden;
+      background:
+        radial-gradient(120% 90% at 80% 10%, rgb(var(--accent-rgb) / .18), transparent 60%),
+        rgb(var(--ink-rgb) / .035);
+    }
+    .course__art svg { width: 82%; height: auto; }
+    .course__meta { padding: 22px 12px 8px; flex: 1; }
+    .tag {
+      display: inline-block; font-size: .78rem; font-weight: 600;
+      padding: 3px 12px; border-radius: 999px;
+      background: rgb(var(--accent-rgb) / .16); color: #8a5a12;
+    }
+    .course h3 { font-size: 1.5rem; margin-top: 12px; }
+    .course__sub { color: var(--text-soft); font-size: .95rem; margin-top: 6px; }
+    .course__foot {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 18px 12px 8px; margin-top: 8px; border-top: 1px solid var(--line);
+    }
+    .price { font-family: var(--font-display); font-size: 2rem; font-weight: 700; line-height: 1; }
+    .price small { font-size: .5em; color: var(--text-soft); font-family: var(--font-body); font-weight: 500; margin-inline-start: 4px; }
+    .flip-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgb(var(--ink-rgb) / .05); border: 0; border-radius: 999px;
+      padding: 10px 16px; font-size: .875rem; font-weight: 600; cursor: pointer;
+      transition: background-color .25s;
+    }
+    .flip-btn:hover { background: rgb(var(--ink-rgb) / .1); }
+    .flip-btn svg { width: 16px; height: 16px; }
+
+    .course__back h3 { margin-top: 0; font-size: 1.4rem; }
+    .course__back p { color: rgb(var(--paper-rgb) / .7); font-size: .95rem; margin-top: 10px; line-height: 1.7; }
+    .features { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 8px; font-size: .92rem; }
+    .features li { display: flex; gap: 10px; align-items: flex-start; color: rgb(var(--paper-rgb) / .88); }
+    .features li::before {
+      content: ""; flex: none; width: 18px; height: 18px; margin-top: 4px; border-radius: 50%;
+      background: rgb(var(--accent-rgb) / .18)
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M5 9.5l2.6 2.5L13 6.5' fill='none' stroke='%23E2A13B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat;
+    }
+    .options { border: 0; padding: 0; margin: 20px 0 0; }
+    .options legend { font-size: .8rem; color: rgb(var(--paper-rgb) / .55); margin-bottom: 8px; padding: 0; }
+    .options__row { display: flex; gap: 8px; }
+    .chip { flex: 1; position: relative; }
+    .chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; margin: 0; }
+    .chip span {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      border-radius: var(--radius-sm); padding: 8px 6px; text-align: center;
+      box-shadow: inset 0 0 0 1px rgb(var(--paper-rgb) / .16);
+      font-size: .85rem; transition: box-shadow .2s, background-color .2s;
+    }
+    .chip span b { font-family: var(--font-display); font-size: 1.05rem; }
+    .chip input:checked + span { background: rgb(var(--accent-rgb) / .14); box-shadow: inset 0 0 0 1.5px var(--accent); }
+    .chip input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .course__actions { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 20px; }
+    .course__actions .btn { flex: 1; min-height: 48px; padding: 0 1em; font-size: .95rem; }
+    .course__back .flip-btn { background: rgb(var(--paper-rgb) / .08); color: var(--paper); padding: 0; width: 48px; height: 48px; justify-content: center; }
+    .course__back .flip-btn:hover { background: rgb(var(--paper-rgb) / .16); }
+
+    /* =========================================================
+       7. STATS
+       ========================================================= */
+    .stats { padding-block: clamp(56px, 8vw, 96px); }
+    .stats__grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .stat { padding: clamp(24px, 4vw, 44px) clamp(16px, 3vw, 36px); position: relative; }
+    .stat + .stat::before { content: ""; position: absolute; inset-block: 24%; inset-inline-start: 0; width: 1px; background: var(--line); }
+    .stat:nth-child(3)::before { display: none; }
+    .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
+    .stat__value {
+      font-family: var(--font-display); font-weight: 700; line-height: 1;
+      font-size: clamp(2.2rem, 6vw, 3.6rem); direction: ltr; display: flex; justify-content: flex-end; align-items: baseline;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat__value .suffix { color: var(--accent); margin-inline-start: 2px; font-size: .7em; }
+    .stat__label { color: var(--text-soft); font-size: .95rem; margin-top: 10px; }
+
+    /* =========================================================
+       8. REVIEWS marquee
+       ========================================================= */
+    .reviews { padding-top: clamp(56px, 8vw, 96px); overflow: hidden; }
+    .marquee {
+      overflow: hidden; padding-block: 12px;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+              mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    }
+    .marquee + .marquee { margin-top: 12px; }
+    .marquee__track {
+      direction: ltr;               /* lay the track out LTR; cards themselves stay RTL */
+      display: flex; gap: 20px; width: max-content;
+    }
+    .review {
+      direction: rtl; width: min(82vw, 380px); flex: none;
+      background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-sm);
+      padding: 26px 26px 22px;
+    }
+    .review__stars { color: var(--accent); letter-spacing: 3px; font-size: .95rem; }
+    .review p { margin-top: 12px; font-size: 1rem; line-height: 1.8; }
+    .review footer { display: flex; align-items: center; gap: 12px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+    .review__avatar {
+      width: 38px; height: 38px; border-radius: 50%; flex: none;
+      display: grid; place-items: center; font-weight: 600; font-size: .9rem;
+      background: rgb(var(--ink-rgb) / .06);
+    }
+    .review cite { font-style: normal; font-weight: 600; font-size: .95rem; display: block; line-height: 1.4; }
+    .review small { color: var(--text-soft); font-size: .82rem; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .marquee__track { animation: marquee var(--marquee-duration, 60s) linear infinite; }
+      .marquee--reverse .marquee__track { animation-direction: reverse; }
+      .marquee:hover .marquee__track { animation-play-state: paused; }
+    }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+    /* Reduced motion: a plain, swipeable row instead */
+    @media (prefers-reduced-motion: reduce) {
+      .marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; padding-inline: var(--gutter); }
+      .marquee [aria-hidden="true"] { display: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* =========================================================
+       9. FINAL CTA
+       ========================================================= */
+    .cta { padding-block: var(--section-y); }
+    .cta__card {
+      position: relative; overflow: hidden; isolation: isolate;
+      background: var(--ink); color: var(--paper);
+      border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
+      padding: clamp(48px, 8vw, 96px) clamp(24px, 6vw, 80px);
+      text-align: center;
+    }
+    .cta__card::before {   /* warm glow */
+      content: ""; position: absolute; z-index: -1;
+      width: 640px; height: 640px; inset-inline-start: 50%; top: -360px; translate: 50% 0;
+      background: radial-gradient(closest-side, rgb(var(--accent-rgb) / .35), transparent);
+    }
+    .cta__grid { position: absolute; inset: 0; z-index: -1; opacity: .5; }
+    .cta h2 { font-size: clamp(2rem, 5.4vw, 3.6rem); max-width: 720px; margin-inline: auto; }
+    .cta p { color: rgb(var(--paper-rgb) / .7); max-width: 520px; margin: 18px auto 0; font-size: 1.125rem; }
+    .cta .btn { margin-top: 36px; min-height: 60px; padding: 0 2em; font-size: 1.075rem; }
+    .cta__note { display: block; margin-top: 16px; font-size: .85rem; color: rgb(var(--paper-rgb) / .5); }
+
+    .site-footer { padding: 0 0 40px; color: var(--text-soft); font-size: .875rem; }
+    .site-footer .container { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 28px; }
+
+    /* =========================================================
+       10. RESPONSIVE (mobile first → up)
+       ========================================================= */
+    @media (min-width: 640px) {
+      .courses__grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 860px) {
+      .nav { display: flex; }
+      .hero { padding: 150px 0 110px; min-height: 100svh; display: flex; align-items: center; }
+      .hero .container { grid-template-columns: 1.05fr 1fr; gap: 40px; }
+      .story__layout { grid-template-columns: 1fr 1fr; gap: 72px; }
+      .story.is-animated .story__layout { gap: 72px; }
+      .story.is-animated .story__visual { width: min(100%, 72svh, 520px); }
+      .story.is-animated .step p { font-size: 1.1rem; }
+      .stats__grid { grid-template-columns: repeat(4, 1fr); }
+      .stat:nth-child(3)::before { display: block; }
+      .stat:nth-child(n+3) { border-top: 0; }
+    }
+    @media (min-width: 1024px) {
+      .courses__grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* Reduced motion: no flip rotation, just an instant face swap */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ============================== HEADER ============================== -->
+  <header class="site-header" id="top">
+    <div class="container">
+      <a href="#top" class="logo" aria-label="مهندس+ — الصفحة الرئيسية">مهندس<b>+</b></a>
+      <nav class="nav" aria-label="التنقل الرئيسي">
+        <a href="#story">كيف نصنع دوراتنا</a>
+        <a href="#courses">الدورات</a>
+        <a href="#reviews">آراء الطلاب</a>
+      </nav>
+      <a href="#order" class="btn btn--ink">ابدأ الآن</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============================== 1. HERO ============================== -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container">
+        <div class="hero__copy">
+          <p class="hero__badge" data-intro><span>جديد</span> دورة البرمجة للمهندسين متاحة الآن</p>
+
+          <h1 id="hero-title">
+            <span class="line"><span data-intro>ابنِ مستقبلك</span></span>
+            <span class="line"><span data-intro>الهندسي، <em>خطوة بخطوة.</em></span></span>
+          </h1>
+
+          <p class="hero__lead" data-intro>
+            دورات أونلاين عملية لطلاب الهندسة — من الأساسيات حتى المشاريع الحقيقية،
+            بشرح عربي واضح وتمارين يصممها مهندسون ممارسون.
+          </p>
+
+          <div class="hero__actions" data-intro>
+            <a href="#courses" class="btn btn--ink">
+              تصفّح الدورات
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M12 5l-5 5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a href="#story" class="btn btn--ghost">كيف نصنعها؟</a>
+          </div>
+
+          <div class="hero__trust" data-intro>
+            <div class="avatars" aria-hidden="true"><i>س</i><i>ي</i><i>ل</i><i>ع</i></div>
+            <span>أكثر من <strong>12,000</strong> طالب هندسة يتعلمون معنا</span>
+          </div>
+        </div>
+
+        <!-- Hero visual: a blueprint plate with a truss bridge being drawn,
+             plus floating "learning" chips. Animated in with GSAP. -->
+        <div class="hero__visual" aria-hidden="true">
+          <svg viewBox="0 0 520 520" fill="none">
+            <defs>
+              <pattern id="heroGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M20 0H0V20" stroke="#F6F3EE" stroke-opacity=".07" stroke-width="1"/>
+              </pattern>
+              <radialGradient id="heroHalo" cx="50%" cy="50%" r="50%">
+                <stop offset="0" stop-color="#E2A13B" stop-opacity=".38"/>
+                <stop offset="1" stop-color="#E2A13B" stop-opacity="0"/>
+              </radialGradient>
+              <filter id="softShadow" x="-30%" y="-30%" width="160%" height="170%">
+                <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#0E1A2B" flood-opacity=".16"/>
+              </filter>
+            </defs>
+
+            <circle class="h-halo" cx="270" cy="260" r="250" fill="url(#heroHalo)"/>
+
+            <!-- blueprint plate -->
+            <g class="h-plate" filter="url(#softShadow)">
+              <g transform="rotate(-6 260 260)">
+                <rect x="78" y="104" width="364" height="312" rx="30" fill="#0E1A2B"/>
+                <rect x="78" y="104" width="364" height="312" rx="30" fill="url(#heroGrid)"/>
+                <!-- plate header -->
+                <circle cx="110" cy="134" r="5" fill="#F6F3EE" fill-opacity=".25"/>
+                <circle cx="128" cy="134" r="5" fill="#F6F3EE" fill-opacity=".25"/>
+                <circle cx="146" cy="134" r="5" fill="#E2A13B"/>
+                <rect x="330" y="128" width="84" height="12" rx="6" fill="#F6F3EE" fill-opacity=".1"/>
+
+                <!-- truss bridge (each path is drawn on via stroke-dashoffset) -->
+                <g stroke="#F6F3EE" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <path class="h-draw" d="M120 330H400"/>
+                  <path class="h-draw" d="M120 330L167 268L213 232L260 220L307 232L353 268L400 330"/>
+                  <path class="h-draw" stroke-opacity=".6" d="M167 268V330M213 232V330M260 220V330M307 232V330M353 268V330"/>
+                  <path class="h-draw" stroke-opacity=".6" d="M167 330L213 232M213 330L260 220M260 220L307 330M307 232L353 330"/>
+                </g>
+                <!-- supports -->
+                <path class="h-draw" d="M120 330l-14 22h28zM400 330l-14 22h28z" stroke="#E2A13B" stroke-width="2.5" stroke-linejoin="round"/>
+                <!-- dimension line -->
+                <g class="h-dim" stroke="#F6F3EE" stroke-opacity=".45" stroke-width="1.5">
+                  <path d="M120 374H400M120 366v16M400 366v16" />
+                  <path d="M128 370l-8 4 8 4M392 370l8 4-8 4" stroke-linejoin="round"/>
+                </g>
+                <text class="h-dim" x="260" y="398" text-anchor="middle" fill="#F6F3EE" fill-opacity=".6" font-size="13" style="direction:ltr;font-family:var(--font-body)">L = 26.0 m</text>
+              </g>
+            </g>
+
+            <!-- floating chip: formula -->
+            <g class="h-chip h-float" filter="url(#softShadow)">
+              <rect x="338" y="56" width="150" height="70" rx="18" fill="#FFFFFF"/>
+              <text x="413" y="88" text-anchor="middle" fill="#0E1A2B" font-size="20" font-weight="600" style="direction:ltr;font-family:var(--font-display)">ΣF = 0</text>
+              <rect x="372" y="100" width="82" height="6" rx="3" fill="#E2A13B" fill-opacity=".5"/>
+            </g>
+
+            <!-- floating chip: plus badge -->
+            <g class="h-chip h-float" filter="url(#softShadow)">
+              <circle cx="78" cy="410" r="44" fill="#E2A13B"/>
+              <path d="M78 390v40M58 410h40" stroke="#0E1A2B" stroke-width="7" stroke-linecap="round"/>
+            </g>
+
+            <!-- floating chip: progress card -->
+            <g class="h-chip h-float" filter="url(#softShadow)">
+              <rect x="300" y="420" width="186" height="78" rx="18" fill="#FFFFFF"/>
+              <text x="470" y="450" text-anchor="end" fill="#0E1A2B" font-size="14" font-weight="600" style="font-family:var(--font-body)">الوحدة 3 من 8</text>
+              <rect x="318" y="468" width="150" height="8" rx="4" fill="#0E1A2B" fill-opacity=".08"/>
+              <rect class="h-progress" x="412" y="468" width="56" height="8" rx="4" fill="#0E1A2B"/>
+            </g>
+
+            <!-- floating chip: small gear -->
+            <g class="h-chip h-float" filter="url(#softShadow)">
+              <rect x="22" y="138" width="78" height="78" rx="20" fill="#FFFFFF"/>
+              <path class="h-gear" data-gear="61,177,24,18,10" fill="none" stroke="#0E1A2B" stroke-width="2.5" stroke-linejoin="round"/>
+              <circle cx="61" cy="177" r="6" fill="#E2A13B"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== 2. STORY ============================== -->
+    <section class="story" id="story" aria-labelledby="story-title">
+      <div class="story__stage">
+        <div class="container">
+          <div class="section-head story__head">
+            <p class="eyebrow">من الفكرة إلى الدورة</p>
+            <h2 id="story-title">كيف نصنع دوراتنا، في ثلاث خطوات.</h2>
+          </div>
+
+          <div class="story__layout">
+            <!-- The one visual that transforms: blueprint → solid part → finished & certified -->
+            <div class="story__visual" aria-hidden="true">
+              <svg viewBox="0 0 480 480" fill="none">
+                <defs>
+                  <pattern id="storyGrid" width="24" height="24" patternUnits="userSpaceOnUse">
+                    <path d="M24 0H0V24" stroke="#F6F3EE" stroke-opacity=".08"/>
+                  </pattern>
+                  <radialGradient id="storyGlow" cx="50%" cy="55%" r="55%">
+                    <stop offset="0" stop-color="#E2A13B" stop-opacity=".45"/>
+                    <stop offset="1" stop-color="#E2A13B" stop-opacity="0"/>
+                  </radialGradient>
+                  <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#FFFFFF"/>
+                    <stop offset="1" stop-color="#C9C3B8"/>
+                  </linearGradient>
+                  <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#F6C873"/>
+                    <stop offset="1" stop-color="#B9771C"/>
+                  </linearGradient>
+                </defs>
+
+                <rect width="480" height="480" fill="#132238"/>
+                <rect class="s-grid" width="480" height="480" fill="url(#storyGrid)"/>
+                <rect class="s-glow" width="480" height="480" fill="url(#storyGlow)"/>
+
+                <!-- Step 1 construction lines (blueprint) -->
+                <g class="s-construct" stroke="#F6F3EE" stroke-opacity=".45" stroke-width="1.2" stroke-dasharray="6 6">
+                  <circle cx="200" cy="270" r="122"/>
+                  <circle cx="312" cy="158" r="70"/>
+                  <path d="M60 270H340M200 130V410M262 96L362 220"/>
+                </g>
+                <g class="s-construct" fill="#F6F3EE" fill-opacity=".65" font-size="13" style="font-family:var(--font-body)">
+                  <text x="28" y="446">Ø 204</text>
+                  <text x="388" y="96">z = 8</text>
+                  <text x="28" y="40" font-size="12" fill-opacity=".45">REV A · SHEET 1/3</text>
+                </g>
+
+                <!-- Circuit trace to the badge (drawn in step 3) -->
+                <path class="s-trace" d="M360 120H430V330Q430 350 410 350H404" stroke="#E2A13B" stroke-width="3" stroke-linecap="round"/>
+                <circle class="s-spark" cx="430" cy="120" r="5" fill="#E2A13B"/>
+
+                <!-- Big gear: fill layers (metal, then gold) + drawn outline -->
+                <g class="s-gear-big">
+                  <path class="s-fill-metal" data-gear="200,270,112,96,14" fill="url(#metal)"/>
+                  <path class="s-fill-gold" data-gear="200,270,112,96,14" fill="url(#gold)"/>
+                  <path class="s-draw" data-gear="200,270,112,96,14" stroke="#F6F3EE" stroke-width="2.5" stroke-linejoin="round"/>
+                  <circle class="s-draw" cx="200" cy="270" r="62" stroke="#F6F3EE" stroke-width="2"/>
+                  <circle class="s-hub" cx="200" cy="270" r="30" fill="#132238"/>
+                  <circle class="s-draw" cx="200" cy="270" r="30" stroke="#F6F3EE" stroke-width="2.5"/>
+                  <g class="s-bolts" fill="#132238">
+                    <circle cx="200" cy="224" r="7"/><circle cx="240" cy="247" r="7"/><circle cx="240" cy="293" r="7"/>
+                    <circle cx="200" cy="316" r="7"/><circle cx="160" cy="293" r="7"/><circle cx="160" cy="247" r="7"/>
+                  </g>
+                </g>
+
+                <!-- Small gear -->
+                <g class="s-gear-small">
+                  <path class="s-fill-accent" data-gear="312,158,64,52,8" fill="#E2A13B"/>
+                  <path class="s-draw" data-gear="312,158,64,52,8" stroke="#F6F3EE" stroke-width="2.5" stroke-linejoin="round"/>
+                  <circle class="s-hub" cx="312" cy="158" r="16" fill="#132238"/>
+                  <circle class="s-draw" cx="312" cy="158" r="16" stroke="#F6F3EE" stroke-width="2.5"/>
+                </g>
+
+                <!-- Step 3 badge: "certified" -->
+                <g class="s-badge">
+                  <circle cx="370" cy="370" r="44" fill="#E2A13B"/>
+                  <circle cx="370" cy="370" r="35" stroke="#0E1A2B" stroke-opacity=".25" stroke-width="1.5" stroke-dasharray="3 4"/>
+                  <path class="s-check" d="M352 371l12 12 24-26" stroke="#0E1A2B" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+              </svg>
+            </div>
+
+            <div>
+              <div class="story__steps">
+                <article class="step">
+                  <span class="step__num">01 · المخطط</span>
+                  <h3>نبدأ من منهجك الجامعي.</h3>
+                  <p>نحلّل مناهج الجامعات وأسئلة الامتحانات السابقة، ونحوّلها إلى خريطة تعلّم واضحة: ماذا تتعلم، وبأي ترتيب، ولماذا.</p>
+                  <div class="step__tags"><span>تحليل المناهج</span><span>خريطة تعلم</span><span>أهداف قابلة للقياس</span></div>
+                </article>
+                <article class="step">
+                  <span class="step__num">02 · البناء</span>
+                  <h3>نصنع الشرح قطعة قطعة.</h3>
+                  <p>فيديوهات قصيرة ومركّزة، رسوم متحركة تُظهر ما لا تراه في الكتاب، وأمثلة محلولة يسجّلها مهندسون يعملون في الميدان.</p>
+                  <div class="step__tags"><span>فيديو 4K</span><span>رسوم توضيحية</span><span>أمثلة محلولة</span></div>
+                </article>
+                <article class="step">
+                  <span class="step__num">03 · الإتقان</span>
+                  <h3>نختبرها حتى تعمل.</h3>
+                  <p>مشاريع تطبيقية واختبارات وشهادة إتمام. لا ننشر أي دورة قبل أن يجرّبها طلاب حقيقيون ونحسّنها بناءً على ملاحظاتهم.</p>
+                  <div class="step__tags"><span>مشاريع عملية</span><span>اختبارات</span><span>شهادة إتمام</span></div>
+                </article>
+              </div>
+              <div class="story__progress" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== 3. COURSES ============================== -->
+    <section class="section courses" id="courses" aria-labelledby="courses-title">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">الدورات</p>
+          <h2 id="courses-title">ثلاث دورات. كل واحدة مشروع حقيقي.</h2>
+          <p>اقلب البطاقة لترى التفاصيل، اختر خطتك، واطلب مباشرة عبر واتساب.</p>
+        </div>
+
+        <div class="courses__grid">
+          <!-- Course 1 -->
+          <article class="course" data-reveal data-course="الدوائر الكهربائية من الصفر">
+            <div class="course__inner">
+              <div class="course__face course__front">
+                <div class="course__art" aria-hidden="true">
+                  <svg viewBox="0 0 240 160" fill="none" stroke="#0E1A2B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M40 40H96M128 40H200V120H150M110 120H40V100M40 64V40"/>
+                    <path d="M96 40l4-10 8 20 8-20 8 20 4-10" />
+                    <path d="M30 64h20M34 76h12" />
+                    <path d="M40 76v24" />
+                    <circle cx="130" cy="120" r="14" fill="#E2A13B" stroke="#0E1A2B"/>
+                    <path d="M124 114l12 12M136 114l-12 12" stroke-width="2"/>
+                    <circle cx="200" cy="80" r="5" fill="#0E1A2B"/><circle cx="40" cy="40" r="5" fill="#0E1A2B"/>
+                    <path d="M150 128l8 8M110 128l-8 8" stroke="#E2A13B" stroke-width="2.5"/>
+                  </svg>
+                </div>
+                <div class="course__meta">
+                  <span class="tag">هندسة كهربائية</span>
+                  <h3>الدوائر الكهربائية من الصفر</h3>
+                  <p class="course__sub">قوانين كيرشوف، ثيفنن، والتيار المتردد — بوضوح تام.</p>
+                </div>
+                <div class="course__foot">
+                  <p class="price"><span data-price>49</span>€<small>دفعة واحدة</small></p>
+                  <button class="flip-btn" type="button" data-flip aria-label="عرض تفاصيل دورة الدوائر الكهربائية">
+                    التفاصيل
+                    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5A5.5 5.5 0 003.4 4M3 9.5A5.5 5.5 0 0012.6 12M3 2v2.5h2.5M13 14v-2.5h-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="course__face course__back">
+                <h3>الدوائر الكهربائية من الصفر</h3>
+                <p>دورة تأسيسية تغطي مقرر الدوائر 1 و2 في معظم الجامعات، مع أكثر من 120 مثالاً محلولاً.</p>
+                <ul class="features">
+                  <li>32 ساعة فيديو مقسّمة لدروس قصيرة</li>
+                  <li>محاكاة الدوائر في LTspice</li>
+                  <li>بنك أسئلة امتحانات مع الحلول</li>
+                </ul>
+                <fieldset class="options">
+                  <legend>خطة الوصول</legend>
+                  <div class="options__row">
+                    <label class="chip"><input type="radio" name="plan-1" value="6 أشهر" data-price="49" checked><span>6 أشهر<b>49€</b></span></label>
+                    <label class="chip"><input type="radio" name="plan-1" value="مدى الحياة + مراجعة شخصية" data-price="79"><span>مدى الحياة<b>79€</b></span></label>
+                  </div>
+                </fieldset>
+                <div class="course__actions">
+                  <a class="btn btn--accent" data-order href="#">اطلب عبر واتساب</a>
+                  <button class="flip-btn" type="button" data-flip aria-label="رجوع"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Course 2 -->
+          <article class="course" data-reveal data-course="التصميم الميكانيكي بـ CAD">
+            <div class="course__inner">
+              <div class="course__face course__front">
+                <div class="course__art" aria-hidden="true">
+                  <svg viewBox="0 0 240 160" fill="none" stroke="#0E1A2B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M120 28l52 30v60l-52 30-52-30V58z" />
+                    <path d="M68 58l52 30 52-30M120 88v60" />
+                    <path d="M120 88l52-30v60l-52 30z" fill="#E2A13B" fill-opacity=".9"/>
+                    <ellipse cx="146" cy="103" rx="10" ry="14" transform="rotate(-30 146 103)" fill="#F6F3EE"/>
+                    <path d="M44 58v60M38 58h12M38 118h12" stroke-width="1.8" stroke-opacity=".5"/>
+                    <path d="M186 132l16-9" stroke-width="1.8" stroke-opacity=".5" stroke-dasharray="3 4"/>
+                  </svg>
+                </div>
+                <div class="course__meta">
+                  <span class="tag">هندسة ميكانيكية</span>
+                  <h3>التصميم الميكانيكي بـ CAD</h3>
+                  <p class="course__sub">من الرسم ثنائي الأبعاد إلى نموذج ثلاثي الأبعاد جاهز للتصنيع.</p>
+                </div>
+                <div class="course__foot">
+                  <p class="price"><span data-price>69</span>€<small>دفعة واحدة</small></p>
+                  <button class="flip-btn" type="button" data-flip aria-label="عرض تفاصيل دورة التصميم الميكانيكي">
+                    التفاصيل
+                    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5A5.5 5.5 0 003.4 4M3 9.5A5.5 5.5 0 0012.6 12M3 2v2.5h2.5M13 14v-2.5h-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="course__face course__back">
+                <h3>التصميم الميكانيكي بـ CAD</h3>
+                <p>تعلّم الرسم الهندسي والتصميم البارامتري خطوة بخطوة، وأنهِ الدورة بمشروع تجميع كامل لملفك المهني.</p>
+                <ul class="features">
+                  <li>AutoCAD و SolidWorks من البداية</li>
+                  <li>الأبعاد والتفاوتات GD&amp;T</li>
+                  <li>مشروع تجميع (Assembly) كامل</li>
+                </ul>
+                <fieldset class="options">
+                  <legend>خطة الوصول</legend>
+                  <div class="options__row">
+                    <label class="chip"><input type="radio" name="plan-2" value="6 أشهر" data-price="69" checked><span>6 أشهر<b>69€</b></span></label>
+                    <label class="chip"><input type="radio" name="plan-2" value="مدى الحياة + مراجعة شخصية" data-price="99"><span>مدى الحياة<b>99€</b></span></label>
+                  </div>
+                </fieldset>
+                <div class="course__actions">
+                  <a class="btn btn--accent" data-order href="#">اطلب عبر واتساب</a>
+                  <button class="flip-btn" type="button" data-flip aria-label="رجوع"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Course 3 -->
+          <article class="course" data-reveal data-course="البرمجة للمهندسين: Python و MATLAB">
+            <div class="course__inner">
+              <div class="course__face course__front">
+                <div class="course__art" aria-hidden="true">
+                  <svg viewBox="0 0 240 160" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="28" y="24" width="184" height="112" rx="14" fill="#0E1A2B"/>
+                    <circle cx="46" cy="40" r="4" fill="#F6F3EE" fill-opacity=".3"/><circle cx="60" cy="40" r="4" fill="#F6F3EE" fill-opacity=".3"/><circle cx="74" cy="40" r="4" fill="#E2A13B"/>
+                    <path d="M48 62l-8 8 8 8M70 62l8 8-8 8" stroke="#E2A13B" stroke-width="3"/>
+                    <path d="M90 70h40M48 96h50M48 112h30" stroke="#F6F3EE" stroke-opacity=".45" stroke-width="3"/>
+                    <path d="M120 116c10-40 22-40 32-10s22 30 32-24" stroke="#F6F3EE" stroke-width="3"/>
+                    <path d="M118 58v62h78" stroke="#F6F3EE" stroke-opacity=".3" stroke-width="1.5"/>
+                  </svg>
+                </div>
+                <div class="course__meta">
+                  <span class="tag">لكل التخصصات</span>
+                  <h3>البرمجة للمهندسين</h3>
+                  <p class="course__sub">Python و MATLAB لحل المسائل الهندسية وتحليل بيانات المختبر.</p>
+                </div>
+                <div class="course__foot">
+                  <p class="price"><span data-price>59</span>€<small>دفعة واحدة</small></p>
+                  <button class="flip-btn" type="button" data-flip aria-label="عرض تفاصيل دورة البرمجة للمهندسين">
+                    التفاصيل
+                    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5A5.5 5.5 0 003.4 4M3 9.5A5.5 5.5 0 0012.6 12M3 2v2.5h2.5M13 14v-2.5h-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="course__face course__back">
+                <h3>البرمجة للمهندسين</h3>
+                <p>لا تحتاج خبرة سابقة. نبدأ من الصفر ونصل إلى أتمتة الحسابات، الرسوم البيانية، والمحاكاة العددية.</p>
+                <ul class="features">
+                  <li>Python: NumPy و Matplotlib و SciPy</li>
+                  <li>MATLAB و Simulink للأنظمة</li>
+                  <li>5 مشاريع من مختبرات حقيقية</li>
+                </ul>
+                <fieldset class="options">
+                  <legend>خطة الوصول</legend>
+                  <div class="options__row">
+                    <label class="chip"><input type="radio" name="plan-3" value="6 أشهر" data-price="59" checked><span>6 أشهر<b>59€</b></span></label>
+                    <label class="chip"><input type="radio" name="plan-3" value="مدى الحياة + مراجعة شخصية" data-price="89"><span>مدى الحياة<b>89€</b></span></label>
+                  </div>
+                </fieldset>
+                <div class="course__actions">
+                  <a class="btn btn--accent" data-order href="#">اطلب عبر واتساب</a>
+                  <button class="flip-btn" type="button" data-flip aria-label="رجوع"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== 4. STATS ============================== -->
+    <section class="stats" aria-label="أرقام مهندس+">
+      <div class="container">
+        <!-- Final values are in the HTML (shown as-is with reduced motion / no JS) -->
+        <div class="stats__grid" data-reveal>
+          <div class="stat">
+            <div class="stat__value"><span class="num" data-count="12000">12,000</span><span class="suffix">+</span></div>
+            <p class="stat__label">طالب هندسة مسجّل</p>
+          </div>
+          <div class="stat">
+            <div class="stat__value"><span class="num" data-count="4.9" data-decimals="1">4.9</span><span class="suffix">/5</span></div>
+            <p class="stat__label">متوسط تقييم الطلاب</p>
+          </div>
+          <div class="stat">
+            <div class="stat__value"><span class="num" data-count="96">96</span><span class="suffix">%</span></div>
+            <p class="stat__label">نجحوا في مقرراتهم</p>
+          </div>
+          <div class="stat">
+            <div class="stat__value"><span class="num" data-count="340">340</span><span class="suffix">+</span></div>
+            <p class="stat__label">ساعة محتوى عملي</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== 5. REVIEWS ============================== -->
+    <section class="reviews" id="reviews" aria-labelledby="reviews-title">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">آراء الطلاب</p>
+          <h2 id="reviews-title">من قاعة المحاضرة إلى أول مشروع.</h2>
+        </div>
+      </div>
+
+      <!-- Each track is duplicated in JS for a seamless loop -->
+      <div class="marquee">
+        <div class="marquee__track">
+          <article class="review">
+            <div class="review__stars" aria-label="5 من 5">★★★★★</div>
+            <p>أول مرة أفهم تحليل الدوائر فعلاً. الشرح مرتّب، والأمثلة تشبه أسئلة امتحاناتنا تماماً.</p>
+            <footer><span class="review__avatar">س</span><div><cite>سارة م.</cite><small>هندسة كهربائية · سنة ثانية</small></div></footer>
+          </article>
+          <article class="review">
+            <div class="review__stars" aria-label="5 من 5">★★★★★</div>
+            <p>مشروع التصميم في دورة CAD صار جزءاً من ملفي، وساعدني في الحصول على تدريب صيفي.</p>
+            <footer><span class="review__avatar">ي</span><div><cite>يوسف ع.</cite><small>هندسة ميكانيكية · سنة رابعة</small></div></footer>
+          </article>
+          <article class="review">
+            <div class="review__stars" aria-label="5 من 5">★★★★★</div>
+            <p>الفيديوهات قصيرة ومركّزة، أذاكر بين المحاضرات بدون ما أضيّع وقتي.</p>
+            <footer><span class="review__avatar">ل</span><div><cite>لينا ك.</cite><small>هندسة مدنية · سنة ثالثة</small></div></footer>
+          </article>
+          <article class="review">
+            <div class="review__stars" aria-label="5 من 5">★★★★★</div>
+            <p>دورة البايثون وفّرت عليّ ساعات من الحسابات اليدوية في تقارير المختبر.</p>
+            <footer><span class="review__avatar">ع</span><div><cite>عمر ح.</cite><small>هندسة حاسوب · سنة ثانية</small></div></footer>
+          </article>
+        </div>
+      </div>
+      <div class="marquee marquee--reverse">
+        <div class="marquee__track">
+          <article class="review">
+            <div class="review__stars" aria-label="5 من 5">★★★★★</div>
+            <p>الدعم سريع جداً. أرسلت سؤالاً في الليل ووصلني الرد قبل الصباح.</p>
+            <footer><span class="review__avatar">م</span><div><cite>مريم س.</cite><small>هندسة كيميائية · سنة أولى</small></div></footer>
+          </article>
+          <article class="review">
+            <div class="review__stars" aria-label="5 من 5">★★★★★</div>
+            <p>السعر مناسب لطالب، والمحتوى أفضل من دورات أغلى بكثير جرّبتها قبل.</p>
+            <footer><span class="review__avatar">خ</span><div><cite>خالد ر.</cite><small>هندسة كهربائية · سنة ثالثة</small></div></footer>
+          </article>
+          <article class="review">
+            <div class="review__stars" aria-label="5 من 5">★★★★★</div>
+            <p>الشهادة والمشاريع العملية فرقت معي كثيراً في مقابلات التدريب.</p>
+            <footer><span class="review__avatar">ن</span><div><cite>نور أ.</cite><small>هندسة صناعية · سنة رابعة</small></div></footer>
+          </article>
+          <article class="review">
+            <div class="review__stars" aria-label="4 من 5">★★★★☆</div>
+            <p>تمنيت لو عرفت مهندس+ من أول سنة. المنهج مرتب حسب ما ندرسه في الجامعة.</p>
+            <footer><span class="review__avatar">ح</span><div><cite>حسن ط.</cite><small>هندسة ميكاترونكس · سنة ثانية</small></div></footer>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== 6. FINAL CTA ============================== -->
+    <section class="cta" id="order" aria-labelledby="cta-title">
+      <div class="container">
+        <div class="cta__card" data-reveal>
+          <svg class="cta__grid" width="100%" height="100%" aria-hidden="true">
+            <defs><pattern id="ctaGrid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" fill="none" stroke="#F6F3EE" stroke-opacity=".06"/></pattern></defs>
+            <rect width="100%" height="100%" fill="url(#ctaGrid)"/>
+          </svg>
+          <p class="eyebrow" style="color: rgb(var(--paper-rgb) / .6)">جاهز للبدء؟</p>
+          <h2 id="cta-title" style="margin-top: 14px">الفصل القادم يبدأ قريباً.<br />ابدأ أنت اليوم.</h2>
+          <p>راسلنا على واتساب، وسنساعدك في اختيار الدورة المناسبة لتخصصك وسنتك الدراسية خلال دقائق.</p>
+          <a class="btn btn--accent" data-wa-message="مرحباً مهندس+ 👋 أرغب في معرفة المزيد عن الدورات المتاحة ومساعدتي في اختيار الدورة المناسبة." href="#" target="_blank" rel="noopener">
+            <!-- WhatsApp glyph -->
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 01-3.3-2.9c-.2-.4.2-.4.7-1.3a.5.5 0 000-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.7 11.8 11.8 0 004.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 001.8-1.2 2.2 2.2 0 00.1-1.2c0-.1-.2-.2-.5-.3z"/></svg>
+            اطلب عبر واتساب
+          </a>
+          <span class="cta__note">نرد عادةً خلال 15 دقيقة · من 9 صباحاً حتى 11 مساءً</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <a href="#top" class="logo" style="font-size:1.25rem">مهندس<b>+</b></a>
+      <span>© <span id="year">2026</span> مهندس+ — دورات هندسية أونلاين.</span>
+    </div>
+  </footer>
+
+  <!-- GSAP + ScrollTrigger from cdnjs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <script>
+  (() => {
+    'use strict';
+
+    /* =========================================================
+       CONFIG — replace with your real WhatsApp number
+       (international format, digits only, no + or leading 00)
+       ========================================================= */
+    const WHATSAPP_NUMBER = '4900000000000';
+
+    const waLink = (message) =>
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+    const $  = (sel, ctx = document) => ctx.querySelector(sel);
+    const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
+
+    /* ---------------------------------------------------------
+       1. Gear paths — generated once from data-gear="cx,cy,rOuter,rInner,teeth"
+       --------------------------------------------------------- */
+    function gearPath(cx, cy, rOut, rIn, teeth) {
+      const step = (Math.PI * 2) / teeth;
+      const pt = (r, a) => `${(cx + r * Math.cos(a)).toFixed(2)} ${(cy + r * Math.sin(a)).toFixed(2)}`;
+      let d = '';
+      for (let i = 0; i < teeth; i++) {
+        const a = i * step;
+        d += (i === 0 ? 'M' : 'L') + pt(rIn, a);          // root start
+        d += 'L' + pt(rOut, a + step * 0.14);              // flank up
+        d += 'L' + pt(rOut, a + step * 0.42);              // tip
+        d += 'L' + pt(rIn, a + step * 0.56);               // flank down
+        d += `A${rIn} ${rIn} 0 0 1 ` + pt(rIn, a + step);  // root arc
+      }
+      return d + 'Z';
+    }
+    $$('[data-gear]').forEach((el) => {
+      const [cx, cy, ro, ri, t] = el.dataset.gear.split(',').map(Number);
+      el.setAttribute('d', gearPath(cx, cy, ro, ri, t));
+    });
+
+    /* ---------------------------------------------------------
+       2. WhatsApp links
+       --------------------------------------------------------- */
+    $$('[data-wa-message]').forEach((a) => { a.href = waLink(a.dataset.waMessage); });
+
+    /* ---------------------------------------------------------
+       3. Course cards: flip toggle, plan options, order link
+       --------------------------------------------------------- */
+    $$('.course').forEach((card) => {
+      const name = card.dataset.course;
+      const order = $('[data-order]', card);
+      const priceEl = $('[data-price]', card);
+
+      const updateOrder = () => {
+        const plan = $('input[type="radio"]:checked', card);
+        priceEl.textContent = plan.dataset.price;
+        order.href = waLink(`مرحباً مهندس+ 👋\nأرغب في التسجيل في دورة: ${name}\nالخطة: ${plan.value} (${plan.dataset.price}€)`);
+      };
+      order.target = '_blank';
+      order.rel = 'noopener';
+      $$('input[type="radio"]', card).forEach((r) => r.addEventListener('change', updateOrder));
+      updateOrder();
+
+      $$('[data-flip]', card).forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const flipped = card.classList.toggle('is-flipped');
+          $$('.course__front [data-flip]', card).forEach((b) => b.setAttribute('aria-expanded', flipped));
+        });
+      });
+    });
+
+    /* ---------------------------------------------------------
+       4. Marquee: duplicate each track so translateX(-50%) loops seamlessly
+       --------------------------------------------------------- */
+    $$('.marquee__track').forEach((track) => {
+      [...track.children].forEach((item) => {
+        const clone = item.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        track.appendChild(clone);
+      });
+      // Keep speed constant regardless of content width (~40px per second)
+      track.style.setProperty('--marquee-duration', `${Math.round(track.scrollWidth / 2 / 40)}s`);
+    });
+
+    /* ---------------------------------------------------------
+       5. Header background on scroll + footer year
+       --------------------------------------------------------- */
+    const header = $('.site-header');
+    const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 12);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    $('#year').textContent = new Date().getFullYear();
+
+    /* ---------------------------------------------------------
+       6. GSAP animations (only when GSAP loaded AND motion is OK)
+       --------------------------------------------------------- */
+    if (!window.gsap || !window.ScrollTrigger) {
+      document.documentElement.classList.remove('motion-ok'); // show everything statically
+      return;
+    }
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
+    // Stroke "draw-on" helpers: dash = real path length, offset hides/reveals it
+    const len = (el) => el.getTotalLength();
+    const hideStroke = (targets) => gsap.set(targets, {
+      strokeDasharray: (i, el) => `${len(el)} ${len(el)}`,
+      strokeDashoffset: (i, el) => len(el),
+    });
+
+    // Header switches to a dark variant while it sits over the dark story section
+    ScrollTrigger.create({
+      trigger: '.story', start: 'top 76px', end: 'bottom 76px',
+      toggleClass: { targets: header, className: 'on-dark' },
+      refreshPriority: -1, // compute after the pinned story has added its pin spacing
+    });
+
+    const mm = gsap.matchMedia();
+
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+
+      /* ---- 6a. Hero intro ---- */
+      hideStroke('.h-draw');
+      const intro = gsap.timeline({ defaults: { ease: 'expo.out', duration: 1.2 } });
+      intro
+        .fromTo('.hero__badge', { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0 }, 0.1)
+        .fromTo('.hero h1 .line > span', { autoAlpha: 0, yPercent: 110 }, { autoAlpha: 1, yPercent: 0, stagger: 0.12 }, 0.2)
+        .fromTo(['.hero__lead', '.hero__actions', '.hero__trust'], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, stagger: 0.1 }, 0.5)
+        .fromTo('.h-halo', { scale: 0.6, opacity: 0, transformOrigin: '50% 50%' }, { scale: 1, opacity: 1, duration: 1.8 }, 0.1)
+        .fromTo('.h-plate', { y: 60, rotation: 6, opacity: 0, transformOrigin: '50% 50%' }, { y: 0, rotation: 0, opacity: 1, duration: 1.4 }, 0.25)
+        .to('.h-draw', { strokeDashoffset: 0, duration: 1.4, stagger: 0.18, ease: 'power2.inOut' }, 0.7)
+        .fromTo('.h-dim', { opacity: 0 }, { opacity: 1, duration: 0.8 }, 1.6)
+        .fromTo('.h-chip', { scale: 0.4, opacity: 0, transformOrigin: '50% 50%' }, { scale: 1, opacity: 1, duration: 1, stagger: 0.12, ease: 'back.out(1.8)' }, 1.0)
+        .fromTo('.h-progress', { scaleX: 0, transformOrigin: '100% 50%' }, { scaleX: 1, duration: 1.2, ease: 'power3.out' }, 1.6);
+
+      // Gentle idle motion after the intro
+      gsap.utils.toArray('.h-float').forEach((el, i) => {
+        gsap.to(el, { y: i % 2 ? 10 : -10, duration: 3 + i * 0.5, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 2 });
+      });
+      gsap.to('.h-gear', { rotation: 360, svgOrigin: '61 177', duration: 12, ease: 'none', repeat: -1 });
+
+      /* ---- 6b. Pinned storytelling (scrubbed) ---- */
+      const story = $('.story');
+      story.classList.add('is-animated');
+      const steps = $$('.step', story);
+      const bars = $$('.story__progress b', story);
+
+      const tl = gsap.timeline({
+        defaults: { ease: 'none' },
+        scrollTrigger: {
+          trigger: '.story__stage',
+          start: 'top top',
+          end: '+=300%',
+          pin: true,
+          scrub: 0.8,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      // Initial states (blueprint, nothing built yet)
+      gsap.set(steps, { autoAlpha: 0, y: 40 });
+      gsap.set(steps[0], { autoAlpha: 1, y: 0 });
+      hideStroke(['.s-draw', '.s-trace', '.s-check']);
+      gsap.set(['.s-fill-metal', '.s-fill-gold', '.s-fill-accent', '.s-hub', '.s-bolts', '.s-glow'], { opacity: 0 });
+      gsap.set('.s-construct', { opacity: 0 });
+      gsap.set('.s-spark', { opacity: 0 });
+      gsap.set('.s-badge', { scale: 0, svgOrigin: '370 370' });
+
+      // STEP 1 (0 → 1): blueprint — construction lines appear, outlines draw on
+      tl.to('.s-construct', { opacity: 1, duration: 0.35 }, 0)
+        .to('.s-draw', { strokeDashoffset: 0, duration: 0.8, stagger: 0.05 }, 0.05)
+        .to(bars[0], { scaleX: 1, duration: 1 }, 0)
+
+      // STEP 2 (1 → 2): build — solid metal fills in, construction fades, gears turn
+        .to(steps[0], { autoAlpha: 0, y: -40, duration: 0.25 }, 0.9)
+        .to(steps[1], { autoAlpha: 1, y: 0, duration: 0.25 }, 1.05)
+        .to('.s-construct', { opacity: 0, duration: 0.4 }, 1.0)
+        .to(['.s-fill-metal', '.s-fill-accent', '.s-hub', '.s-bolts'], { opacity: 1, duration: 0.5 }, 1.1)
+        .to('.s-draw', { stroke: '#0E1A2B', strokeOpacity: 0.35, duration: 0.5 }, 1.1)
+        .to(bars[1], { scaleX: 1, duration: 1 }, 1)
+
+      // STEP 3 (2 → 3): mastery — metal turns to gold, current flows, badge certifies
+        .to(steps[1], { autoAlpha: 0, y: -40, duration: 0.25 }, 1.9)
+        .to(steps[2], { autoAlpha: 1, y: 0, duration: 0.25 }, 2.05)
+        .to('.s-fill-gold', { opacity: 1, duration: 0.5 }, 2.0)
+        .to('.s-glow', { opacity: 1, duration: 0.6 }, 2.0)
+        .to('.s-grid', { opacity: 0.4, duration: 0.6 }, 2.0)
+        .to('.s-trace', { strokeDashoffset: 0, duration: 0.4 }, 2.2)
+        .to('.s-spark', { opacity: 1, duration: 0.1 }, 2.2)
+        .to('.s-badge', { scale: 1, duration: 0.3, ease: 'back.out(2)' }, 2.5)
+        .to('.s-check', { strokeDashoffset: 0, duration: 0.25 }, 2.65)
+        .to(bars[2], { scaleX: 1, duration: 1 }, 2)
+
+      // Gears rotate across steps 2–3 (14:8 tooth ratio keeps them meshing)
+        .to('.s-gear-big', { rotation: 140, svgOrigin: '200 270', duration: 2 }, 1)
+        .to('.s-gear-small', { rotation: -245, svgOrigin: '312 158', duration: 2 }, 1);
+
+      /* ---- 6c. Count-up stats ---- */
+      $$('.num[data-count]').forEach((el) => {
+        const target = parseFloat(el.dataset.count);
+        const decimals = parseInt(el.dataset.decimals || '0', 10);
+        const fmt = (v) => v.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+        const state = { v: 0 };
+        el.textContent = fmt(0);
+        gsap.to(state, {
+          v: target, duration: 2.2, ease: 'power3.out',
+          onUpdate: () => { el.textContent = fmt(state.v); },
+          scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+        });
+      });
+
+      /* ---- 6d. Soft reveal for section content ---- */
+      gsap.set('[data-reveal]', { autoAlpha: 0, y: 40 });
+      ScrollTrigger.batch('[data-reveal]', {
+        start: 'top 88%',
+        once: true,
+        onEnter: (batch) => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.12, clearProps: 'transform' }),
+      });
+
+      // Cleanup when the user switches to reduced motion mid-session
+      return () => {
+        story.classList.remove('is-animated');
+        $$('.num[data-count]').forEach((el) => {
+          const d = parseInt(el.dataset.decimals || '0', 10);
+          el.textContent = parseFloat(el.dataset.count).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+        });
+      };
+    });
+
+    // Recalculate pin positions once web fonts have loaded (text heights change)
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
+  })();
+  </script>
+</body>
+</html>
