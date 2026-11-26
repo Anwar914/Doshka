@@ -46,6 +46,15 @@
       --font-display: "Reem Kufi", "IBM Plex Sans Arabic", "Segoe UI", sans-serif;
       --font-body: "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
 
+      /* Type scale: 7 steps, ratio ~1.25 from a 17px body */
+      --fs-xs: .8125rem;   /* 13px labels, captions */
+      --fs-sm: .9375rem;   /* 15px secondary text */
+      --fs-base: 1.0625rem;/* 17px body */
+      --fs-md: 1.25rem;    /* 20px lead, small headings */
+      --fs-lg: 1.5625rem;  /* 25px card titles */
+      --fs-xl: clamp(2rem, 4.4vw, 3rem);    /* section headings, stats */
+      --fs-2xl: clamp(2.6rem, 8.6vw, 5rem); /* hero headline */
+
       --radius-sm: 12px;
       --radius: 22px;
       --radius-lg: 32px;
@@ -71,19 +80,21 @@
       background: var(--paper);
       color: var(--text);
       font-family: var(--font-body);
-      font-size: 1.0625rem;
+      font-size: var(--fs-base);
       line-height: 1.75;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
+    /* Kufi display face only for the hero headline and the logo; other headings use the
+       body family in bold so Arabic letter dots stay legible at smaller sizes. */
     h1, h2, h3 {
-      font-family: var(--font-display);
+      font-family: var(--font-body);
       font-weight: 700;
       line-height: 1.2;
       margin: 0;
       letter-spacing: 0;
     }
-    p { margin: 0; }
+    p { margin: 0; text-wrap: pretty; }
     a { color: inherit; text-decoration: none; }
     svg { display: block; }
     button { font: inherit; color: inherit; }
@@ -97,20 +108,20 @@
     }
 
     .section-head { max-width: 640px; margin-bottom: clamp(40px, 6vw, 72px); }
-    .section-head h2 { font-size: clamp(2rem, 4.6vw, 3.25rem); text-wrap: balance; }
-    .section-head p { color: var(--text-soft); margin-top: 16px; font-size: 1.125rem; }
+    .section-head h2 { font-size: var(--fs-xl); text-wrap: balance; }
+    .section-head p { color: var(--text-soft); margin-top: 16px; font-size: var(--fs-md); }
 
     /* Buttons */
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: .6em;
       min-height: 52px; padding: 0 1.6em;
       border-radius: 999px; border: 0; cursor: pointer;
-      font-weight: 600; font-size: 1rem;
+      font-weight: 600; font-size: var(--fs-base);
       transition: transform .35s var(--ease-out), box-shadow .35s var(--ease-out), background-color .25s;
     }
     .btn svg { width: 1.15em; height: 1.15em; flex: none; }
     .btn--ink { background: var(--ink); color: var(--paper); box-shadow: 0 10px 24px -10px rgb(var(--ink-rgb) / .6); }
-    .btn--accent { background: var(--accent); color: var(--ink); box-shadow: 0 12px 28px -12px rgb(var(--accent-rgb) / .9); }
+    .btn--accent { background: var(--accent); color: var(--ink); }
     .btn--ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .16); }
     .btn--ink:hover { box-shadow: 0 16px 30px -12px rgb(var(--ink-rgb) / .7); }
     .btn--ghost:hover { box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .4); }
@@ -134,12 +145,17 @@
     .site-header.on-dark .nav a:hover { color: var(--paper); }
     .site-header.on-dark .btn--ink { background: var(--accent); color: var(--ink); box-shadow: none; }
     .site-header .container { display: flex; align-items: center; justify-content: space-between; height: 76px; }
-    .logo { font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; display: inline-flex; align-items: baseline; gap: 2px; }
-    .logo b { color: var(--accent); font-size: 1.15em; line-height: 0; }
-    .nav { display: none; gap: 32px; font-size: .95rem; color: var(--text-soft); }
-    .nav a { transition: color .2s; }
+    .logo { min-height: 44px; align-items: center !important; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); display: inline-flex; align-items: baseline; gap: 2px; }
+    /* The "+" sits on an amber tile so it keeps contrast on both light and dark grounds */
+    .logo b {
+      display: inline-grid; place-items: center; width: .95em; height: .95em; margin-inline-start: 4px;
+      border-radius: 6px; background: var(--accent); color: var(--ink);
+      font-family: var(--font-body); font-size: .8em; line-height: 1; align-self: center;
+    }
+    .nav { display: none; gap: 32px; font-size: var(--fs-sm); color: var(--text-soft); }
+    .nav a { transition: color .2s; display: inline-flex; align-items: center; min-height: 44px; padding-inline: 4px; }  /* 44px tap target */
     .nav a:hover { color: var(--ink); }
-    .site-header .btn { min-height: 42px; padding: 0 1.2em; font-size: .9rem; }
+    .site-header .btn { min-height: 42px; padding: 0 1.2em; font-size: var(--fs-sm); }
 
     /* =========================================================
        4. HERO
@@ -148,15 +164,16 @@
     .hero .container { display: grid; gap: 48px; align-items: center; }
     .hero__copy { position: relative; z-index: 2; }
     .hero h1 {
-      font-size: clamp(2.6rem, 8.6vw, 5rem);
+      font-family: var(--font-display);
+      font-size: var(--fs-2xl);
       line-height: 1.12;
       text-wrap: balance;
     }
     .hero h1 .line { display: block; overflow: hidden; padding-bottom: .1em; }
     .hero h1 .line > span { display: inline-block; }
-    .hero__lead { font-size: clamp(1.05rem, 2.4vw, 1.2rem); color: var(--text-soft); max-width: 34em; margin-top: 24px; }
+    .hero__lead { font-size: var(--fs-md); color: var(--text-soft); max-width: 34em; margin-top: 24px; }
     .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
-    .hero__note { margin-top: 20px; font-size: .9rem; color: var(--text-soft); }
+    .hero__note { margin-top: 20px; font-size: var(--fs-sm); color: var(--text-soft); }
 
     /* The drawing sheet: an assembly drawing whose parts list is the platform menu */
     .sheet {
@@ -166,9 +183,9 @@
       overflow: hidden;
     }
     .sheet__drawing { width: 100%; height: auto; direction: ltr; }
-    .sheet__parts { width: 100%; border-collapse: collapse; font-size: .95rem; }
+    .sheet__parts { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
     .sheet__parts th {
-      font-weight: 500; font-size: .8rem; color: rgb(var(--paper-rgb) / .55);
+      font-weight: 500; font-size: var(--fs-xs); color: rgb(var(--paper-rgb) / .55);
       text-align: start; padding: 10px 20px; border-block: 1px solid rgb(var(--paper-rgb) / .12);
     }
     .sheet__parts td { padding: 0; border-bottom: 1px solid rgb(var(--paper-rgb) / .12); }
@@ -181,15 +198,15 @@
     .balloon {
       width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center;
       box-shadow: inset 0 0 0 1.5px var(--accent); color: var(--accent);
-      font-family: var(--font-display); font-weight: 600; font-size: .95rem;
+      font-family: var(--font-body); font-weight: 600; font-size: var(--fs-sm);
     }
-    .sheet__parts strong { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; }
-    .sheet__parts span.field { color: rgb(var(--paper-rgb) / .65); font-size: .9rem; }
-    .sheet__parts .open { font-size: .85rem; font-weight: 600; color: var(--accent); }
+    .sheet__parts strong { font-family: var(--font-body); font-weight: 600; font-size: var(--fs-md); }
+    .sheet__parts span.field { color: rgb(var(--paper-rgb) / .65); font-size: var(--fs-sm); }
+    .sheet__parts .open { font-size: var(--fs-xs); font-weight: 600; color: var(--accent); }
     .sheet__title { display: grid; grid-template-columns: 2fr 1fr 1fr; }
-    .sheet__title div { padding: 12px 20px; font-size: .9rem; }
+    .sheet__title div { padding: 12px 20px; font-size: var(--fs-sm); }
     .sheet__title div + div { border-inline-start: 1px solid rgb(var(--paper-rgb) / .12); }
-    .sheet__title small { display: block; font-size: .72rem; color: rgb(var(--paper-rgb) / .5); }
+    .sheet__title small { display: block; font-size: var(--fs-xs); color: rgb(var(--paper-rgb) / .5); }
 
     /* Hidden starting states, only when motion is allowed (see <head> script) */
     .motion-ok [data-intro], .motion-ok .h-chip, .motion-ok .sheet__parts tbody tr { opacity: 0; }
@@ -205,20 +222,20 @@
     .story__visual {
       position: relative; width: min(100%, 520px); margin-inline: auto;
       border-radius: var(--radius-lg); overflow: hidden;
-      box-shadow: 0 40px 80px -30px rgb(0 0 0 / .6), inset 0 0 0 1px rgb(var(--paper-rgb) / .08);
+      box-shadow: inset 0 0 0 1px rgb(var(--paper-rgb) / .08);
     }
     .story__visual svg { width: 100%; height: auto; direction: ltr; }
     .story__steps { display: grid; gap: 40px; }
     .step__num {
-      font-family: var(--font-display); font-size: .95rem; color: var(--accent);
+      font-family: var(--font-body); font-size: var(--fs-sm); color: var(--accent);
       display: inline-flex; align-items: center; gap: 10px;
     }
     .step__num::after { content: ""; width: 40px; height: 1px; background: rgb(var(--accent-rgb) / .5); }
-    .step h3 { font-size: clamp(1.75rem, 4vw, 2.75rem); margin-top: 10px; }
-    .step p { color: rgb(var(--paper-rgb) / .68); margin-top: 14px; max-width: 460px; font-size: 1.075rem; }
+    .step h3 { font-size: var(--fs-xl); margin-top: 10px; }
+    .step p { color: rgb(var(--paper-rgb) / .68); margin-top: 14px; max-width: 460px; font-size: var(--fs-base); }
     .step__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
     .step__tags span {
-      font-size: .8rem; padding: 4px 12px; border-radius: 999px;
+      font-size: var(--fs-xs); padding: 4px 12px; border-radius: 999px;
       background: rgb(var(--paper-rgb) / .06); box-shadow: inset 0 0 0 1px rgb(var(--paper-rgb) / .1);
       color: rgb(var(--paper-rgb) / .8);
     }
@@ -246,7 +263,7 @@
       transform: scaleX(0); transform-origin: right center;   /* RTL fill */
     }
     .story.is-animated .story__head { display: none; }
-    .story.is-animated .step p { font-size: 1rem; }
+    .story.is-animated .step p { font-size: var(--fs-base); }
 
     /* =========================================================
        6. PLATFORMS — 3D flip cards
@@ -278,37 +295,30 @@
     }
 
     .course__art {
-      border-radius: calc(var(--radius-lg) - 8px); aspect-ratio: 3 / 2;
+      border-radius: calc(var(--radius-lg) - 8px); aspect-ratio: 16 / 9;
       display: grid; place-items: center; overflow: hidden;
       background: rgb(var(--ink-rgb) / .04);
     }
-    .course__art svg { width: 82%; height: auto; }
+    .course__art svg { width: 72%; max-height: 100%; height: auto; }
     .course__meta { padding: 22px 12px 8px; flex: 1; }
-    .tag {
-      display: inline-block; font-size: .78rem; font-weight: 600;
-      padding: 3px 12px; border-radius: 999px;
-      background: rgb(var(--accent-rgb) / .16); color: #8a5a12;
-    }
-    .course h3 { font-size: 1.5rem; margin-top: 12px; }
-    .course__sub { color: var(--text-soft); font-size: .95rem; margin-top: 6px; }
+    .course h3 { font-size: var(--fs-lg); }
+    .course__sub { color: var(--text-soft); font-size: var(--fs-sm); margin-top: 6px; }
     .course__foot {
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
       padding: 18px 12px 8px; margin-top: 8px; border-top: 1px solid var(--line);
     }
-    .price { font-family: var(--font-display); font-size: 2rem; font-weight: 700; line-height: 1; }
-    .price small { font-size: .5em; color: var(--text-soft); font-family: var(--font-body); font-weight: 500; margin-inline-start: 4px; }
     .flip-btn {
       display: inline-flex; align-items: center; gap: 8px;
       background: rgb(var(--ink-rgb) / .05); border: 0; border-radius: 999px;
-      padding: 10px 16px; font-size: .875rem; font-weight: 600; cursor: pointer;
+      padding: 10px 16px; font-size: var(--fs-xs); font-weight: 600; cursor: pointer;
       transition: background-color .25s;
     }
     .flip-btn:hover { background: rgb(var(--ink-rgb) / .1); }
     .flip-btn svg { width: 16px; height: 16px; }
 
-    .course__back h3 { margin-top: 0; font-size: 1.4rem; }
-    .course__back p { color: rgb(var(--paper-rgb) / .7); font-size: .95rem; margin-top: 10px; line-height: 1.7; }
-    .features { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 8px; font-size: .92rem; }
+    .course__back h3 { margin-top: 0; font-size: var(--fs-lg); }
+    .course__back p { color: rgb(var(--paper-rgb) / .7); font-size: var(--fs-sm); margin-top: 10px; line-height: 1.7; }
+    .features { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 8px; font-size: var(--fs-sm); }
     .features li { display: flex; gap: 10px; align-items: flex-start; color: rgb(var(--paper-rgb) / .88); }
     .features li::before {
       content: ""; flex: none; width: 18px; height: 18px; margin-top: 4px; border-radius: 50%;
@@ -316,7 +326,7 @@
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M5 9.5l2.6 2.5L13 6.5' fill='none' stroke='%23E2A13B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat;
     }
     .course__actions { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 24px; }
-    .course__actions .btn { flex: 1; min-height: 48px; padding: 0 1em; font-size: .95rem; }
+    .course__actions .btn { flex: 1; min-height: 48px; padding: 0 1em; font-size: var(--fs-sm); }
     .btn[aria-disabled="true"] { background: rgb(var(--paper-rgb) / .1); color: rgb(var(--paper-rgb) / .6); box-shadow: none; cursor: default; transform: none; }
     .course__back .flip-btn { background: rgb(var(--paper-rgb) / .08); color: var(--paper); padding: 0; width: 48px; height: 48px; justify-content: center; }
     .course__back .flip-btn:hover { background: rgb(var(--paper-rgb) / .16); }
@@ -324,7 +334,7 @@
     /* =========================================================
        7. STATS
        ========================================================= */
-    .stats { padding-block: clamp(56px, 8vw, 96px); }
+    .stats { padding-block: var(--section-y); }
     .stats__grid {
       display: grid; grid-template-columns: repeat(2, 1fr);
       background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow);
@@ -335,17 +345,16 @@
     .stat:nth-child(3)::before { display: none; }
     .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
     .stat__value {
-      font-family: var(--font-display); font-weight: 700; line-height: 1;
-      font-size: clamp(2.2rem, 6vw, 3.6rem); direction: ltr; display: flex; justify-content: flex-end; align-items: baseline;
+      font-family: var(--font-body); font-weight: 700; line-height: 1;
+      font-size: var(--fs-xl); direction: ltr; display: flex; justify-content: flex-end; align-items: baseline;
       font-variant-numeric: tabular-nums;
     }
-    .stat__value .suffix { color: var(--accent); margin-inline-start: 2px; font-size: .7em; }
-    .stat__label { color: var(--text-soft); font-size: .95rem; margin-top: 10px; }
+    .stat__label { color: var(--text-soft); font-size: var(--fs-sm); margin-top: 10px; }
 
     /* =========================================================
        9. FINAL CTA
        ========================================================= */
-    .cta { padding-block: var(--section-y); }
+    .cta { padding-block: 0 var(--section-y); }  /* follows .stats on the same ground: one shared gap */
     .cta__card {
       position: relative; overflow: hidden; isolation: isolate;
       background: var(--ink); color: var(--paper);
@@ -354,21 +363,21 @@
       text-align: center;
     }
     .cta__grid { position: absolute; inset: 0; z-index: -1; opacity: .5; }
-    .cta h2 { font-size: clamp(2rem, 5.4vw, 3.6rem); max-width: 720px; margin-inline: auto; }
-    .cta p { color: rgb(var(--paper-rgb) / .7); max-width: 520px; margin: 18px auto 0; font-size: 1.125rem; }
-    .cta .btn { margin-top: 36px; min-height: 60px; padding: 0 2em; font-size: 1.075rem; }
+    .cta h2 { font-size: var(--fs-xl); max-width: 720px; margin-inline: auto; }
+    .cta p { color: rgb(var(--paper-rgb) / .7); max-width: 520px; margin: 18px auto 0; font-size: var(--fs-md); }
+    .cta .btn { margin-top: 36px; min-height: 60px; padding: 0 2em; font-size: var(--fs-base); }
     .cta__links { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 36px; }
     .cta__links .btn { margin-top: 0; min-width: 200px; }
     .cta__links .btn--ghost { color: var(--paper); box-shadow: inset 0 0 0 1.5px rgb(var(--paper-rgb) / .25); }
     .cta__links .btn--ghost:hover { box-shadow: inset 0 0 0 1.5px rgb(var(--paper-rgb) / .6); }
-    .course__langs { display: flex; gap: 6px; margin-top: 16px; }
+    .course__langs { display: flex; gap: 6px; margin: 0; }
     .course__langs span {
-      font-size: .75rem; font-weight: 600; letter-spacing: .04em; padding: 2px 10px; border-radius: 999px;
-      background: rgb(var(--paper-rgb) / .08); color: rgb(var(--paper-rgb) / .75);
+      font-size: var(--fs-xs); font-weight: 600; letter-spacing: .04em; padding: 4px 10px; border-radius: 999px;
+      background: rgb(var(--ink-rgb) / .06); color: var(--ink);
     }
-    .cta__note { display: block; margin-top: 16px; font-size: .85rem; color: rgb(var(--paper-rgb) / .5); }
+    .cta__note { display: block; margin-top: 16px; font-size: var(--fs-xs); color: rgb(var(--paper-rgb) / .5); }
 
-    .site-footer { padding: 0 0 40px; color: var(--text-soft); font-size: .875rem; }
+    .site-footer { padding: 0 0 40px; color: var(--text-soft); font-size: var(--fs-xs); }
     .site-footer .container { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 28px; }
 
     /* =========================================================
@@ -384,7 +393,7 @@
       .story__layout { grid-template-columns: 1fr 1fr; gap: 72px; }
       .story.is-animated .story__layout { gap: 72px; }
       .story.is-animated .story__visual { width: min(100%, 72svh, 520px); }
-      .story.is-animated .step p { font-size: 1.1rem; }
+      .story.is-animated .step p { font-size: var(--fs-md); }
       .stats__grid { grid-template-columns: repeat(4, 1fr); }
       .stat:nth-child(3)::before { display: block; }
       .stat:nth-child(n+3) { border-top: 0; }
@@ -474,8 +483,8 @@
               </g>
               <path class="h-draw" d="M266 116L240 52" stroke-opacity=".6" stroke-width="1.2"/>
             </g>
-            <text x="82" y="228" text-anchor="middle" fill="#EEF1F0" fill-opacity=".6" font-size="11" style="font-family:var(--font-body)">60</text>
-            <text x="106" y="99" fill="#EEF1F0" fill-opacity=".6" font-size="10" style="font-family:var(--font-body)">Ø20 H7</text>
+            <text x="82" y="228" text-anchor="middle" fill="#EEF1F0" fill-opacity=".7" font-size="15" style="font-family:var(--font-body)">60</text>
+            <text x="100" y="99" fill="#EEF1F0" fill-opacity=".7" font-size="14" style="font-family:var(--font-body)">Ø20 H7</text>
 
             <!-- Item balloons -->
             <g class="h-chip" font-size="15" font-weight="600" text-anchor="middle" style="font-family:var(--font-display)">
@@ -500,7 +509,7 @@
           </table>
 
           <div class="sheet__title">
-            <div><small>الرسم</small>مهندس+ صفحة المنصات</div>
+            <div><small>الرسم</small>مهندس+</div>
             <div><small>المقياس</small>1:1</div>
             <div><small>الورقة</small>1 / 1</div>
           </div>
@@ -534,12 +543,11 @@
                   </svg>
                 </div>
                 <div class="course__meta">
-                  <span class="tag">هندسة التحكم</span>
                   <h3>Mizan</h3>
                   <p class="course__sub">هندسة التحكم بالعربية، مع محاكي متحكمات PID تفاعلي.</p>
                 </div>
                 <div class="course__foot">
-                  <p class="price">مجاناً<small>لكل الطلاب</small></p>
+                  <p class="course__langs" aria-label="لغات المنصة"><span>AR</span><span>DE</span></p>
                   <button class="flip-btn" type="button" data-flip aria-label="عرض تفاصيل Mizan">
                     التفاصيل
                     <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5A5.5 5.5 0 003.4 4M3 9.5A5.5 5.5 0 0012.6 12M3 2v2.5h2.5M13 14v-2.5h-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -555,7 +563,6 @@
                   <li>محاكي P / PI / PID مع مقاييس الاستجابة</li>
                   <li>ملاحظات ومؤقت تركيز</li>
                 </ul>
-                <div class="course__langs" aria-label="اللغات"><span>AR</span><span>DE</span></div>
                 <div class="course__actions">
                   <a class="btn btn--accent" data-platform="mizan" href="#">افتح Mizan</a>
                   <button class="flip-btn" type="button" data-flip aria-label="رجوع"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -578,12 +585,11 @@
                   </svg>
                 </div>
                 <div class="course__meta">
-                  <span class="tag">الإنجليزية التقنية</span>
                   <h3>Marsa</h3>
                   <p class="course__sub">الإنجليزية التقنية لهندسة السيارات، مع سيارة ثلاثية الأبعاد.</p>
                 </div>
                 <div class="course__foot">
-                  <p class="price">مجاناً<small>لكل الطلاب</small></p>
+                  <p class="course__langs" aria-label="لغات المنصة"><span>EN</span><span>DE</span></p>
                   <button class="flip-btn" type="button" data-flip aria-label="عرض تفاصيل Marsa">
                     التفاصيل
                     <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5A5.5 5.5 0 003.4 4M3 9.5A5.5 5.5 0 0012.6 12M3 2v2.5h2.5M13 14v-2.5h-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -599,7 +605,6 @@
                   <li>قواعد B1 و B2 وتمارين</li>
                   <li>امتحانان تجريبيان (90 دقيقة)</li>
                 </ul>
-                <div class="course__langs" aria-label="اللغات"><span>EN</span><span>DE</span></div>
                 <div class="course__actions">
                   <a class="btn btn--accent" data-platform="marsa" href="#">افتح Marsa</a>
                   <button class="flip-btn" type="button" data-flip aria-label="رجوع"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -623,18 +628,17 @@
                       <rect width="64" height="20" rx="2" stroke="#0E1A2B" stroke-width="1.5" fill="#FFFFFF"/>
                       <path d="M20 0v20M48 0v20" stroke="#0E1A2B" stroke-width="1.5"/>
                       <circle cx="10" cy="10" r="5" stroke="#0E1A2B" stroke-width="1.5"/><path d="M10 3v14M3 10h14" stroke="#0E1A2B" stroke-width="1.2"/>
-                      <text x="34" y="14" text-anchor="middle" fill="#0E1A2B" font-size="9" style="direction:ltr;font-family:var(--font-body)">0.05</text>
-                      <text x="56" y="14" text-anchor="middle" fill="#0E1A2B" font-size="9" style="direction:ltr;font-family:var(--font-body)">A</text>
+                      <text x="34" y="14" text-anchor="middle" fill="#0E1A2B" font-size="10" style="direction:ltr;font-family:var(--font-body)">0.05</text>
+                      <text x="56" y="14" text-anchor="middle" fill="#0E1A2B" font-size="10" style="direction:ltr;font-family:var(--font-body)">A</text>
                     </g>
                   </svg>
                 </div>
                 <div class="course__meta">
-                  <span class="tag">الرسم الهندسي</span>
                   <h3>Mastara</h3>
                   <p class="course__sub">مختبر تفاعلي للرسم الهندسي والتفاوتات والتجميع.</p>
                 </div>
                 <div class="course__foot">
-                  <p class="price">مجاناً<small>لكل الطلاب</small></p>
+                  <p class="course__langs" aria-label="لغات المنصة"><span>AR</span><span>DE</span><span>EN</span></p>
                   <button class="flip-btn" type="button" data-flip aria-label="عرض تفاصيل Mastara">
                     التفاصيل
                     <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5A5.5 5.5 0 003.4 4M3 9.5A5.5 5.5 0 0012.6 12M3 2v2.5h2.5M13 14v-2.5h-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -650,7 +654,6 @@
                   <li>الخلوص والتداخل عند التركيب</li>
                   <li>نموذج تجميع تفاعلي</li>
                 </ul>
-                <div class="course__langs" aria-label="اللغات"><span>AR</span><span>DE</span><span>EN</span></div>
                 <div class="course__actions">
                   <a class="btn btn--accent" data-platform="mastara" href="#">افتح Mastara</a>
                   <button class="flip-btn" type="button" data-flip aria-label="رجوع"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -702,10 +705,10 @@
                   <circle cx="312" cy="158" r="70"/>
                   <path d="M60 270H340M200 130V410M262 96L362 220"/>
                 </g>
-                <g class="s-construct" fill="#EEF1F0" fill-opacity=".65" font-size="13" style="font-family:var(--font-body)">
-                  <text x="28" y="446">Ø 204</text>
-                  <text x="388" y="96">z = 8</text>
-                  <text x="28" y="40" font-size="12" fill-opacity=".45">REV A · SHEET 1/3</text>
+                <g class="s-construct" fill="#EEF1F0" fill-opacity=".7" font-size="18" style="font-family:var(--font-body)">
+                  <text x="28" y="452">Ø 204</text>
+                  <text x="380" y="92">z = 8</text>
+                  <text x="28" y="44" font-size="16" fill-opacity=".55">REV A · SHEET 1/3</text>
                 </g>
 
                 <!-- Circuit trace to the badge (drawn in step 3) -->
@@ -789,8 +792,8 @@
             <p class="stat__label">وحدة سيارة ثلاثية الأبعاد</p>
           </div>
           <div class="stat">
-            <div class="stat__value"><span class="num" data-count="0">0</span><span class="suffix">€</span></div>
-            <p class="stat__label">رسوم على الطلاب</p>
+            <div class="stat__value"><span class="num" data-count="9">9</span></div>
+            <p class="stat__label">دروس في هندسة التحكم</p>
           </div>
         </div>
       </div>
@@ -818,7 +821,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <a href="#top" class="logo" style="font-size:1.25rem">مهندس<b>+</b></a>
+      <a href="#top" class="logo" style="font-size: var(--fs-md)">مهندس<b>+</b></a>
       <span>© <span id="year">2026</span> مهندس+ — منصات تعليمية مجانية لطلاب الهندسة.</span>
     </div>
   </footer>
@@ -995,10 +998,10 @@
         .to('.s-fill-gold', { opacity: 1, duration: 0.5 }, 2.0)
         .to('.s-glow', { opacity: 1, duration: 0.6 }, 2.0)
         .to('.s-grid', { opacity: 0.4, duration: 0.6 }, 2.0)
-        .to('.s-trace', { strokeDashoffset: 0, duration: 0.4 }, 2.2)
-        .to('.s-spark', { opacity: 1, duration: 0.1 }, 2.2)
-        .to('.s-badge', { scale: 1, duration: 0.3, ease: 'back.out(2)' }, 2.5)
-        .to('.s-check', { strokeDashoffset: 0, duration: 0.25 }, 2.65)
+        .to('.s-trace', { strokeDashoffset: 0, duration: 0.35 }, 2.05)
+        .to('.s-spark', { opacity: 1, duration: 0.1 }, 2.05)
+        .to('.s-badge', { scale: 1, duration: 0.25, ease: 'back.out(2)' }, 2.3)
+        .to('.s-check', { strokeDashoffset: 0, duration: 0.25 }, 2.4)
         .to(bars[2], { scaleX: 1, duration: 1 }, 2)
 
       // Gears rotate across steps 2–3 (14:8 tooth ratio keeps them meshing)
