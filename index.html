@@ -337,6 +337,7 @@
     .chip input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
     .course__actions { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 20px; }
     .course__actions .btn { flex: 1; min-height: 48px; padding: 0 1em; font-size: .95rem; }
+    .btn[aria-disabled="true"] { background: rgb(var(--paper-rgb) / .1); color: rgb(var(--paper-rgb) / .6); box-shadow: none; cursor: default; transform: none; }
     .course__back .flip-btn { background: rgb(var(--paper-rgb) / .08); color: var(--paper); padding: 0; width: 48px; height: 48px; justify-content: center; }
     .course__back .flip-btn:hover { background: rgb(var(--paper-rgb) / .16); }
 
@@ -748,12 +749,12 @@
         <div class="section-head" data-reveal>
           <p class="eyebrow">الدورات</p>
           <h2 id="courses-title">ثلاث دورات. كل واحدة مشروع حقيقي.</h2>
-          <p>اقلب البطاقة لترى التفاصيل، اختر خطتك، واطلب مباشرة عبر واتساب.</p>
+          <p>اقلب البطاقة لترى التفاصيل والخطط، ثم انتقل مباشرة إلى صفحة الدورة.</p>
         </div>
 
         <div class="courses__grid">
           <!-- Course 1 -->
-          <article class="course" data-reveal data-course="الدوائر الكهربائية من الصفر">
+          <article class="course" data-reveal data-course="الدوائر الكهربائية من الصفر" data-course-key="circuits">
             <div class="course__inner">
               <div class="course__face course__front">
                 <div class="course__art" aria-hidden="true">
@@ -797,7 +798,7 @@
                   </div>
                 </fieldset>
                 <div class="course__actions">
-                  <a class="btn btn--accent" data-order href="#">اطلب عبر واتساب</a>
+                  <a class="btn btn--accent" data-order href="#">إلى صفحة الدورة</a>
                   <button class="flip-btn" type="button" data-flip aria-label="رجوع"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                 </div>
               </div>
@@ -805,7 +806,7 @@
           </article>
 
           <!-- Course 2 -->
-          <article class="course" data-reveal data-course="التصميم الميكانيكي بـ CAD">
+          <article class="course" data-reveal data-course="التصميم الميكانيكي بـ CAD" data-course-key="cad">
             <div class="course__inner">
               <div class="course__face course__front">
                 <div class="course__art" aria-hidden="true">
@@ -847,7 +848,7 @@
                   </div>
                 </fieldset>
                 <div class="course__actions">
-                  <a class="btn btn--accent" data-order href="#">اطلب عبر واتساب</a>
+                  <a class="btn btn--accent" data-order href="#">إلى صفحة الدورة</a>
                   <button class="flip-btn" type="button" data-flip aria-label="رجوع"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                 </div>
               </div>
@@ -855,7 +856,7 @@
           </article>
 
           <!-- Course 3 -->
-          <article class="course" data-reveal data-course="البرمجة للمهندسين: Python و MATLAB">
+          <article class="course" data-reveal data-course="البرمجة للمهندسين: Python و MATLAB" data-course-key="programming">
             <div class="course__inner">
               <div class="course__face course__front">
                 <div class="course__art" aria-hidden="true">
@@ -897,7 +898,7 @@
                   </div>
                 </fieldset>
                 <div class="course__actions">
-                  <a class="btn btn--accent" data-order href="#">اطلب عبر واتساب</a>
+                  <a class="btn btn--accent" data-order href="#">إلى صفحة الدورة</a>
                   <button class="flip-btn" type="button" data-flip aria-label="رجوع"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                 </div>
               </div>
@@ -1119,6 +1120,14 @@
       mastara: '',  // TODO: Streamlit URL of github.com/Anwar914/mastara-engineering-drawing
     };
 
+    // Course pages: the "إلى صفحة الدورة" button on the back of each course card.
+    // Empty = the button shows "رابط الدورة قريباً" (coming soon) and is disabled.
+    const COURSE_LINKS = {
+      circuits:    '',
+      cad:         '',   // falls back to the Mastara link (technical drawing / GD&T)
+      programming: '',
+    };
+
     const waLink = (message) =>
       `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
@@ -1167,15 +1176,23 @@
       const order = $('[data-order]', card);
       const priceEl = $('[data-price]', card);
 
-      const updateOrder = () => {
-        const plan = $('input[type="radio"]:checked', card);
-        priceEl.textContent = plan.dataset.price;
-        order.href = waLink(`مرحباً مهندس+ 👋\nأرغب في التسجيل في دورة: ${name}\nالخطة: ${plan.value} (${plan.dataset.price}€)`);
-      };
-      order.target = '_blank';
-      order.rel = 'noopener';
-      $$('input[type="radio"]', card).forEach((r) => r.addEventListener('change', updateOrder));
-      updateOrder();
+      const key = card.dataset.courseKey;
+      const url = COURSE_LINKS[key] || (key === 'cad' ? DEMO_LINKS.mastara : '');
+      if (url) {
+        order.href = url;
+        order.target = '_blank';
+        order.rel = 'noopener';
+        order.setAttribute('aria-label', `صفحة دورة ${name}`);
+      } else {
+        order.removeAttribute('href');
+        order.setAttribute('aria-disabled', 'true');
+        order.textContent = 'رابط الدورة قريباً';
+      }
+
+      // Plan choice updates the price shown on the front
+      const updatePrice = () => { priceEl.textContent = $('input[type="radio"]:checked', card).dataset.price; };
+      $$('input[type="radio"]', card).forEach((r) => r.addEventListener('change', updatePrice));
+      updatePrice();
 
       $$('[data-flip]', card).forEach((btn) => {
         btn.addEventListener('click', () => {
