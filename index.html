@@ -335,7 +335,7 @@
     .chip span b { font-family: var(--font-display); font-size: 1.05rem; }
     .chip input:checked + span { background: rgb(var(--accent-rgb) / .14); box-shadow: inset 0 0 0 1.5px var(--accent); }
     .chip input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
-    .course__actions { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 20px; }
+    .course__actions { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 24px; }
     .course__actions .btn { flex: 1; min-height: 48px; padding: 0 1em; font-size: .95rem; }
     .btn[aria-disabled="true"] { background: rgb(var(--paper-rgb) / .1); color: rgb(var(--paper-rgb) / .6); box-shadow: none; cursor: default; transform: none; }
     .course__back .flip-btn { background: rgb(var(--paper-rgb) / .08); color: var(--paper); padding: 0; width: 48px; height: 48px; justify-content: center; }
@@ -749,7 +749,7 @@
         <div class="section-head" data-reveal>
           <p class="eyebrow">الدورات</p>
           <h2 id="courses-title">ثلاث دورات. كل واحدة مشروع حقيقي.</h2>
-          <p>اقلب البطاقة لترى التفاصيل والخطط، ثم انتقل مباشرة إلى صفحة الدورة.</p>
+          <p>كل الدورات مجانية للطلاب. اقلب البطاقة لترى التفاصيل، ثم انتقل مباشرة إلى صفحة الدورة.</p>
         </div>
 
         <div class="courses__grid">
@@ -775,7 +775,7 @@
                   <p class="course__sub">قوانين كيرشوف، ثيفنن، والتيار المتردد — بوضوح تام.</p>
                 </div>
                 <div class="course__foot">
-                  <p class="price"><span data-price>49</span>€<small>دفعة واحدة</small></p>
+                  <p class="price">مجاناً<small>لكل الطلاب</small></p>
                   <button class="flip-btn" type="button" data-flip aria-label="عرض تفاصيل دورة الدوائر الكهربائية">
                     التفاصيل
                     <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5A5.5 5.5 0 003.4 4M3 9.5A5.5 5.5 0 0012.6 12M3 2v2.5h2.5M13 14v-2.5h-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -790,13 +790,6 @@
                   <li>محاكاة الدوائر في LTspice</li>
                   <li>بنك أسئلة امتحانات مع الحلول</li>
                 </ul>
-                <fieldset class="options">
-                  <legend>خطة الوصول</legend>
-                  <div class="options__row">
-                    <label class="chip"><input type="radio" name="plan-1" value="6 أشهر" data-price="49" checked><span>6 أشهر<b>49€</b></span></label>
-                    <label class="chip"><input type="radio" name="plan-1" value="مدى الحياة + مراجعة شخصية" data-price="79"><span>مدى الحياة<b>79€</b></span></label>
-                  </div>
-                </fieldset>
                 <div class="course__actions">
                   <a class="btn btn--accent" data-order href="#">إلى صفحة الدورة</a>
                   <button class="flip-btn" type="button" data-flip aria-label="رجوع"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -825,7 +818,7 @@
                   <p class="course__sub">من الرسم ثنائي الأبعاد إلى نموذج ثلاثي الأبعاد جاهز للتصنيع.</p>
                 </div>
                 <div class="course__foot">
-                  <p class="price"><span data-price>69</span>€<small>دفعة واحدة</small></p>
+                  <p class="price">مجاناً<small>لكل الطلاب</small></p>
                   <button class="flip-btn" type="button" data-flip aria-label="عرض تفاصيل دورة التصميم الميكانيكي">
                     التفاصيل
                     <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5A5.5 5.5 0 003.4 4M3 9.5A5.5 5.5 0 0012.6 12M3 2v2.5h2.5M13 14v-2.5h-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -840,13 +833,6 @@
                   <li>الأبعاد والتفاوتات GD&amp;T</li>
                   <li>مشروع تجميع (Assembly) كامل</li>
                 </ul>
-                <fieldset class="options">
-                  <legend>خطة الوصول</legend>
-                  <div class="options__row">
-                    <label class="chip"><input type="radio" name="plan-2" value="6 أشهر" data-price="69" checked><span>6 أشهر<b>69€</b></span></label>
-                    <label class="chip"><input type="radio" name="plan-2" value="مدى الحياة + مراجعة شخصية" data-price="99"><span>مدى الحياة<b>99€</b></span></label>
-                  </div>
-                </fieldset>
                 <div class="course__actions">
                   <a class="btn btn--accent" data-order href="#">إلى صفحة الدورة</a>
                   <button class="flip-btn" type="button" data-flip aria-label="رجوع"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -875,7 +861,7 @@
                   <p class="course__sub">Python و MATLAB لحل المسائل الهندسية وتحليل بيانات المختبر.</p>
                 </div>
                 <div class="course__foot">
-                  <p class="price"><span data-price>59</span>€<small>دفعة واحدة</small></p>
+                  <p class="price">مجاناً<small>لكل الطلاب</small></p>
                   <button class="flip-btn" type="button" data-flip aria-label="عرض تفاصيل دورة البرمجة للمهندسين">
                     التفاصيل
                     <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6.5A5.5 5.5 0 003.4 4M3 9.5A5.5 5.5 0 0012.6 12M3 2v2.5h2.5M13 14v-2.5h-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -890,13 +876,6 @@
                   <li>MATLAB و Simulink للأنظمة</li>
                   <li>5 مشاريع من مختبرات حقيقية</li>
                 </ul>
-                <fieldset class="options">
-                  <legend>خطة الوصول</legend>
-                  <div class="options__row">
-                    <label class="chip"><input type="radio" name="plan-3" value="6 أشهر" data-price="59" checked><span>6 أشهر<b>59€</b></span></label>
-                    <label class="chip"><input type="radio" name="plan-3" value="مدى الحياة + مراجعة شخصية" data-price="89"><span>مدى الحياة<b>89€</b></span></label>
-                  </div>
-                </fieldset>
                 <div class="course__actions">
                   <a class="btn btn--accent" data-order href="#">إلى صفحة الدورة</a>
                   <button class="flip-btn" type="button" data-flip aria-label="رجوع"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -1052,7 +1031,7 @@
           </article>
           <article class="review">
             <div class="review__stars" aria-label="5 من 5">★★★★★</div>
-            <p>السعر مناسب لطالب، والمحتوى أفضل من دورات أغلى بكثير جرّبتها قبل.</p>
+            <p>مجانية تماماً، والمحتوى أفضل من دورات مدفوعة كثيرة جرّبتها قبل.</p>
             <footer><span class="review__avatar">خ</span><div><cite>خالد ر.</cite><small>هندسة كهربائية · سنة ثالثة</small></div></footer>
           </article>
           <article class="review">
@@ -1174,7 +1153,6 @@
     $$('.course').forEach((card) => {
       const name = card.dataset.course;
       const order = $('[data-order]', card);
-      const priceEl = $('[data-price]', card);
 
       const key = card.dataset.courseKey;
       const url = COURSE_LINKS[key] || (key === 'cad' ? DEMO_LINKS.mastara : '');
@@ -1188,11 +1166,6 @@
         order.setAttribute('aria-disabled', 'true');
         order.textContent = 'رابط الدورة قريباً';
       }
-
-      // Plan choice updates the price shown on the front
-      const updatePrice = () => { priceEl.textContent = $('input[type="radio"]:checked', card).dataset.price; };
-      $$('input[type="radio"]', card).forEach((r) => r.addEventListener('change', updatePrice));
-      updatePrice();
 
       $$('[data-flip]', card).forEach((btn) => {
         btn.addEventListener('click', () => {
