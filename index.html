@@ -15,10 +15,10 @@
     }
   </script>
 
-  <!-- Fonts: El Messiri (display) + IBM Plex Sans Arabic (body) -->
+  <!-- Fonts: Reem Kufi (display, geometric Kufi close to technical lettering) + IBM Plex Sans Arabic (body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <style>
     /* =========================================================
@@ -26,12 +26,15 @@
        Three core colours: paper (light), ink (dark), accent.
        Everything else is derived from them with alpha.
        ========================================================= */
+    /* Concept: the page is a drafting sheet. Cool drafting-film paper, blueprint ink,
+       one amber highlighter. The hero drawing sheet is the single bold element;
+       everything else stays quiet. Text aligns to the start edge (right, RTL). */
     :root {
-      --paper: #F6F3EE;
+      --paper: #EEF1F0;
       --ink: #0E1A2B;
       --accent: #E2A13B;
 
-      --paper-rgb: 246 243 238;
+      --paper-rgb: 238 241 240;
       --ink-rgb: 14 26 43;
       --accent-rgb: 226 161 59;
 
@@ -40,7 +43,7 @@
       --text-soft: rgb(var(--ink-rgb) / .66);
       --line: rgb(var(--ink-rgb) / .09);
 
-      --font-display: "El Messiri", "Segoe UI", serif;
+      --font-display: "Reem Kufi", "IBM Plex Sans Arabic", "Segoe UI", sans-serif;
       --font-body: "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
 
       --radius-sm: 12px;
@@ -93,16 +96,8 @@
       clip: rect(0 0 0 0); white-space: nowrap;
     }
 
-    /* Small uppercase-style label above headings */
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: .6em;
-      font-size: .875rem; font-weight: 600; color: var(--text-soft);
-    }
-    .eyebrow::before {
-      content: ""; width: 22px; height: 2px; border-radius: 2px; background: var(--accent);
-    }
     .section-head { max-width: 640px; margin-bottom: clamp(40px, 6vw, 72px); }
-    .section-head h2 { font-size: clamp(2rem, 4.6vw, 3.25rem); margin-top: 14px; }
+    .section-head h2 { font-size: clamp(2rem, 4.6vw, 3.25rem); text-wrap: balance; }
     .section-head p { color: var(--text-soft); margin-top: 16px; font-size: 1.125rem; }
 
     /* Buttons */
@@ -117,7 +112,6 @@
     .btn--ink { background: var(--ink); color: var(--paper); box-shadow: 0 10px 24px -10px rgb(var(--ink-rgb) / .6); }
     .btn--accent { background: var(--accent); color: var(--ink); box-shadow: 0 12px 28px -12px rgb(var(--accent-rgb) / .9); }
     .btn--ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .16); }
-    .btn:hover { transform: translateY(-2px); }
     .btn--ink:hover { box-shadow: 0 16px 30px -12px rgb(var(--ink-rgb) / .7); }
     .btn--ghost:hover { box-shadow: inset 0 0 0 1.5px rgb(var(--ink-rgb) / .4); }
     .btn:active { transform: translateY(0); }
@@ -153,49 +147,52 @@
     .hero { position: relative; padding: 120px 0 72px; overflow: hidden; }
     .hero .container { display: grid; gap: 48px; align-items: center; }
     .hero__copy { position: relative; z-index: 2; }
-    .hero__badge {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 6px 14px 6px 6px; border-radius: 999px;
-      background: var(--surface); box-shadow: var(--shadow-sm);
-      font-size: .875rem; color: var(--text-soft);
-    }
-    .hero__badge span {
-      background: var(--ink); color: var(--paper); border-radius: 999px;
-      padding: 2px 10px; font-size: .8rem; font-weight: 600;
-    }
     .hero h1 {
-      font-size: clamp(2.6rem, 9vw, 5.2rem);
-      margin-top: 22px;
-      line-height: 1.15;
+      font-size: clamp(2.6rem, 8.6vw, 5rem);
+      line-height: 1.12;
+      text-wrap: balance;
     }
-    .hero h1 .line { display: block; overflow: hidden; padding-bottom: .08em; }
+    .hero h1 .line { display: block; overflow: hidden; padding-bottom: .1em; }
     .hero h1 .line > span { display: inline-block; }
-    .hero h1 em { font-style: normal; position: relative; white-space: nowrap; }
-    .hero h1 em::after {             /* hand-drawn style underline */
-      content: ""; position: absolute; inset-inline: -2%; bottom: .08em; height: .2em;
-      background: rgb(var(--accent-rgb) / .45); border-radius: 999px; z-index: -1;
-    }
-    .hero__lead { font-size: clamp(1.05rem, 2.4vw, 1.25rem); color: var(--text-soft); max-width: 520px; margin-top: 22px; }
-    .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
-    .hero__trust { display: flex; align-items: center; gap: 14px; margin-top: 36px; font-size: .9rem; color: var(--text-soft); }
-    .avatars { display: flex; }
-    .avatars i {
-      width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--paper);
-      margin-inline-start: -10px; display: grid; place-items: center;
-      font-style: normal; font-size: .75rem; font-weight: 600; color: var(--paper);
-    }
-    .avatars i:first-child { margin-inline-start: 0; }
-    .avatars i:nth-child(1) { background: var(--ink); }
-    .avatars i:nth-child(2) { background: #3a4657; }
-    .avatars i:nth-child(3) { background: var(--accent); color: var(--ink); }
-    .avatars i:nth-child(4) { background: #6b7482; }
+    .hero__lead { font-size: clamp(1.05rem, 2.4vw, 1.2rem); color: var(--text-soft); max-width: 34em; margin-top: 24px; }
+    .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .hero__note { margin-top: 20px; font-size: .9rem; color: var(--text-soft); }
 
-    .hero__visual { position: relative; width: min(100%, 560px); margin-inline: auto; }
-    .hero__visual svg { width: 100%; height: auto; overflow: visible; }
+    /* The drawing sheet: an assembly drawing whose parts list is the platform menu */
+    .sheet {
+      margin: 0; width: min(100%, 560px); margin-inline: auto;
+      background: var(--ink); color: var(--paper);
+      border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+    .sheet__drawing { width: 100%; height: auto; direction: ltr; }
+    .sheet__parts { width: 100%; border-collapse: collapse; font-size: .95rem; }
+    .sheet__parts th {
+      font-weight: 500; font-size: .8rem; color: rgb(var(--paper-rgb) / .55);
+      text-align: start; padding: 10px 20px; border-block: 1px solid rgb(var(--paper-rgb) / .12);
+    }
+    .sheet__parts td { padding: 0; border-bottom: 1px solid rgb(var(--paper-rgb) / .12); }
+    .sheet__parts a {
+      display: grid; grid-template-columns: 2.2rem 1fr auto; align-items: center; gap: 12px;
+      padding: 14px 20px; transition: background-color .25s;
+    }
+    .sheet__parts a:hover { background: rgb(var(--paper-rgb) / .06); }
+    .sheet__parts a:focus-visible { outline-offset: -3px; }
+    .balloon {
+      width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center;
+      box-shadow: inset 0 0 0 1.5px var(--accent); color: var(--accent);
+      font-family: var(--font-display); font-weight: 600; font-size: .95rem;
+    }
+    .sheet__parts strong { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; }
+    .sheet__parts span.field { color: rgb(var(--paper-rgb) / .65); font-size: .9rem; }
+    .sheet__parts .open { font-size: .85rem; font-weight: 600; color: var(--accent); }
+    .sheet__title { display: grid; grid-template-columns: 2fr 1fr 1fr; }
+    .sheet__title div { padding: 12px 20px; font-size: .9rem; }
+    .sheet__title div + div { border-inline-start: 1px solid rgb(var(--paper-rgb) / .12); }
+    .sheet__title small { display: block; font-size: .72rem; color: rgb(var(--paper-rgb) / .5); }
 
     /* Hidden starting states, only when motion is allowed (see <head> script) */
-    .motion-ok [data-intro],
-    .motion-ok .h-halo, .motion-ok .h-plate, .motion-ok .h-chip, .motion-ok .h-dim { opacity: 0; }
+    .motion-ok [data-intro], .motion-ok .h-chip, .motion-ok .sheet__parts tbody tr { opacity: 0; }
 
     /* =========================================================
        5. STORY (pinned, scrubbed)
@@ -203,7 +200,6 @@
        .is-animated = pinned stage with stacked steps.
        ========================================================= */
     .story { background: var(--ink); color: var(--paper); position: relative; }
-    .story .eyebrow { color: rgb(var(--paper-rgb) / .6); }
     .story__stage { padding-block: var(--section-y); }
     .story__layout { display: grid; gap: 40px; align-items: center; }
     .story__visual {
@@ -284,9 +280,7 @@
     .course__art {
       border-radius: calc(var(--radius-lg) - 8px); aspect-ratio: 3 / 2;
       display: grid; place-items: center; overflow: hidden;
-      background:
-        radial-gradient(120% 90% at 80% 10%, rgb(var(--accent-rgb) / .18), transparent 60%),
-        rgb(var(--ink-rgb) / .035);
+      background: rgb(var(--ink-rgb) / .04);
     }
     .course__art svg { width: 82%; height: auto; }
     .course__meta { padding: 22px 12px 8px; flex: 1; }
@@ -323,7 +317,6 @@
     }
     .course__actions { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 24px; }
     .course__actions .btn { flex: 1; min-height: 48px; padding: 0 1em; font-size: .95rem; }
-    .btn[aria-disabled="true"]:hover { transform: none; }
     .btn[aria-disabled="true"] { background: rgb(var(--paper-rgb) / .1); color: rgb(var(--paper-rgb) / .6); box-shadow: none; cursor: default; transform: none; }
     .course__back .flip-btn { background: rgb(var(--paper-rgb) / .08); color: var(--paper); padding: 0; width: 48px; height: 48px; justify-content: center; }
     .course__back .flip-btn:hover { background: rgb(var(--paper-rgb) / .16); }
@@ -359,11 +352,6 @@
       border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
       padding: clamp(48px, 8vw, 96px) clamp(24px, 6vw, 80px);
       text-align: center;
-    }
-    .cta__card::before {   /* warm glow */
-      content: ""; position: absolute; z-index: -1;
-      width: 640px; height: 640px; inset-inline-start: 50%; top: -360px; translate: 50% 0;
-      background: radial-gradient(closest-side, rgb(var(--accent-rgb) / .35), transparent);
     }
     .cta__grid { position: absolute; inset: 0; z-index: -1; opacity: .5; }
     .cta h2 { font-size: clamp(2rem, 5.4vw, 3.6rem); max-width: 720px; margin-inline: auto; }
@@ -421,7 +409,7 @@
         <a href="#platforms">المنصات</a>
         <a href="#story">كيف نصنعها</a>
       </nav>
-      <a href="#platforms" class="btn btn--ink">ابدأ الآن</a>
+      <a href="#platforms" class="btn btn--ink">اختر منصتك</a>
     </div>
   </header>
 
@@ -430,11 +418,9 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="container">
         <div class="hero__copy">
-          <a href="#platforms" class="hero__badge" data-intro><span>مجاناً</span> 3 منصات تعليمية لطلاب الهندسة</a>
-
           <h1 id="hero-title">
             <span class="line"><span data-intro>كل دوراتك الهندسية</span></span>
-            <span class="line"><span data-intro>في <em>مكان واحد.</em></span></span>
+            <span class="line"><span data-intro>في مكان واحد.</span></span>
           </h1>
 
           <p class="hero__lead" data-intro>
@@ -443,96 +429,82 @@
           </p>
 
           <div class="hero__actions" data-intro>
-            <a href="#platforms" class="btn btn--ink">
-              اختر منصتك
-              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M12 5l-5 5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
+            <a href="#platforms" class="btn btn--ink">اختر منصتك</a>
             <a href="#story" class="btn btn--ghost">كيف نصنعها؟</a>
           </div>
 
-          <div class="hero__trust" data-intro>
-            <div class="avatars" aria-hidden="true"><i>M</i><i>M</i><i>M</i></div>
-            <span>بالعربية والإنجليزية والألمانية · <strong>بدون أي رسوم</strong></span>
-          </div>
+          <p class="hero__note" data-intro>متاحة بالعربية والإنجليزية والألمانية، بدون أي رسوم.</p>
         </div>
 
-        <!-- Hero visual: a blueprint plate with a truss bridge being drawn,
-             plus floating "learning" chips. Animated in with GSAP. -->
-        <div class="hero__visual" aria-hidden="true">
-          <svg viewBox="0 0 520 520" fill="none">
+        <!-- Drawing sheet: three views with item balloons, a parts list (the platform
+             links) and a title block, like a real assembly drawing. -->
+        <figure class="sheet" data-intro>
+          <svg class="sheet__drawing" viewBox="0 0 480 230" fill="none" aria-hidden="true">
             <defs>
               <pattern id="heroGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-                <path d="M20 0H0V20" stroke="#F6F3EE" stroke-opacity=".07" stroke-width="1"/>
+                <path d="M20 0H0V20" stroke="#EEF1F0" stroke-opacity=".07"/>
               </pattern>
-              <radialGradient id="heroHalo" cx="50%" cy="50%" r="50%">
-                <stop offset="0" stop-color="#E2A13B" stop-opacity=".38"/>
-                <stop offset="1" stop-color="#E2A13B" stop-opacity="0"/>
-              </radialGradient>
-              <filter id="softShadow" x="-30%" y="-30%" width="160%" height="170%">
-                <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#0E1A2B" flood-opacity=".16"/>
-              </filter>
             </defs>
+            <rect width="480" height="230" fill="url(#heroGrid)"/>
 
-            <circle class="h-halo" cx="270" cy="260" r="250" fill="url(#heroHalo)"/>
-
-            <!-- blueprint plate -->
-            <g class="h-plate" filter="url(#softShadow)">
-              <g transform="rotate(-6 260 260)">
-                <rect x="78" y="104" width="364" height="312" rx="30" fill="#0E1A2B"/>
-                <rect x="78" y="104" width="364" height="312" rx="30" fill="url(#heroGrid)"/>
-                <!-- plate header -->
-                <circle cx="110" cy="134" r="5" fill="#F6F3EE" fill-opacity=".25"/>
-                <circle cx="128" cy="134" r="5" fill="#F6F3EE" fill-opacity=".25"/>
-                <circle cx="146" cy="134" r="5" fill="#E2A13B"/>
-                <rect x="330" y="128" width="84" height="12" rx="6" fill="#F6F3EE" fill-opacity=".1"/>
-
-                <!-- truss bridge (each path is drawn on via stroke-dashoffset) -->
-                <g stroke="#F6F3EE" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                  <path class="h-draw" d="M120 330H400"/>
-                  <path class="h-draw" d="M120 330L167 268L213 232L260 220L307 232L353 268L400 330"/>
-                  <path class="h-draw" stroke-opacity=".6" d="M167 268V330M213 232V330M260 220V330M307 232V330M353 268V330"/>
-                  <path class="h-draw" stroke-opacity=".6" d="M167 330L213 232M213 330L260 220M260 220L307 330M307 232L353 330"/>
-                </g>
-                <!-- supports -->
-                <path class="h-draw" d="M120 330l-14 22h28zM400 330l-14 22h28z" stroke="#E2A13B" stroke-width="2.5" stroke-linejoin="round"/>
-                <!-- dimension line -->
-                <g class="h-dim" stroke="#F6F3EE" stroke-opacity=".45" stroke-width="1.5">
-                  <path d="M120 374H400M120 366v16M400 366v16" />
-                  <path d="M128 370l-8 4 8 4M392 370l8 4-8 4" stroke-linejoin="round"/>
-                </g>
-                <text class="h-dim" x="260" y="398" text-anchor="middle" fill="#F6F3EE" fill-opacity=".6" font-size="13" style="direction:ltr;font-family:var(--font-body)">L = 26.0 m</text>
+            <g stroke="#EEF1F0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <!-- Views read right to left (RTL): 1 Mizan on the right, 3 Mastara on the left -->
+              <!-- View 1: step response (Mizan) -->
+              <g transform="translate(324 0)">
+              <path class="h-draw" d="M28 200V96M28 200h112" stroke-opacity=".5" stroke-width="1.5"/>
+              <path class="h-draw" d="M28 128h112" stroke-opacity=".5" stroke-width="1.2" stroke-dasharray="4 4"/>
+              <path class="h-draw" d="M28 200c14 0 16-78 34-78s20 14 32 10 26-4 46-4" stroke="#E2A13B" stroke-width="3"/>
+                <path class="h-draw" d="M62 122L84 52" stroke-opacity=".6" stroke-width="1.2"/>
               </g>
-            </g>
 
-            <!-- floating chip: formula -->
-            <g class="h-chip h-float" filter="url(#softShadow)">
-              <rect x="338" y="56" width="150" height="70" rx="18" fill="#FFFFFF"/>
-              <text x="413" y="88" text-anchor="middle" fill="#0E1A2B" font-size="20" font-weight="600" style="direction:ltr;font-family:var(--font-display)">ΣF = 0</text>
-              <rect x="372" y="100" width="82" height="6" rx="3" fill="#E2A13B" fill-opacity=".5"/>
-            </g>
+              <!-- View 2: wheel with brake disc (Marsa) -->
+              <circle class="h-draw" cx="240" cy="150" r="54"/>
+              <circle class="h-draw" cx="240" cy="150" r="34" stroke-opacity=".7"/>
+              <circle class="h-draw" cx="240" cy="150" r="9"/>
+              <path class="h-draw" d="M262 118a40 40 0 0112 18" stroke="#E2A13B" stroke-width="6"/>
+              <path class="h-draw" d="M180 150h120M240 90v120" stroke-opacity=".4" stroke-width="1" stroke-dasharray="10 3 2 3"/>
 
-            <!-- floating chip: plus badge -->
-            <g class="h-chip h-float" filter="url(#softShadow)">
-              <circle cx="78" cy="410" r="44" fill="#E2A13B"/>
-              <path d="M78 390v40M58 410h40" stroke="#0E1A2B" stroke-width="7" stroke-linecap="round"/>
+              <!-- View 3: plate with toleranced bore (Mastara) -->
+              <g transform="translate(-324 0)">
+              <rect class="h-draw" x="364" y="104" width="84" height="92" rx="2"/>
+              <circle class="h-draw" cx="406" cy="150" r="20" stroke="#E2A13B"/>
+              <path class="h-draw" d="M352 150h108M406 92v116" stroke-opacity=".4" stroke-width="1" stroke-dasharray="10 3 2 3"/>
+              <path class="h-draw" d="M364 214h84M364 208v12M448 208v12" stroke-opacity=".5" stroke-width="1.2"/>
+                <path class="h-draw" d="M420 136L406 52" stroke-opacity=".6" stroke-width="1.2"/>
+              </g>
+              <path class="h-draw" d="M266 116L240 52" stroke-opacity=".6" stroke-width="1.2"/>
             </g>
+            <text x="82" y="228" text-anchor="middle" fill="#EEF1F0" fill-opacity=".6" font-size="11" style="font-family:var(--font-body)">60</text>
+            <text x="106" y="99" fill="#EEF1F0" fill-opacity=".6" font-size="10" style="font-family:var(--font-body)">Ø20 H7</text>
 
-            <!-- floating chip: progress card -->
-            <g class="h-chip h-float" filter="url(#softShadow)">
-              <rect x="300" y="420" width="186" height="78" rx="18" fill="#FFFFFF"/>
-              <text x="470" y="450" text-anchor="end" fill="#0E1A2B" font-size="14" font-weight="600" style="font-family:var(--font-body)">الوحدة 3 من 8</text>
-              <rect x="318" y="468" width="150" height="8" rx="4" fill="#0E1A2B" fill-opacity=".08"/>
-              <rect class="h-progress" x="412" y="468" width="56" height="8" rx="4" fill="#0E1A2B"/>
+            <!-- Item balloons -->
+            <g class="h-chip" font-size="15" font-weight="600" text-anchor="middle" style="font-family:var(--font-display)">
+              <circle cx="408" cy="38" r="15" fill="#0E1A2B" stroke="#E2A13B" stroke-width="1.5"/><text x="408" y="43" fill="#E2A13B">1</text>
             </g>
-
-            <!-- floating chip: small gear -->
-            <g class="h-chip h-float" filter="url(#softShadow)">
-              <rect x="22" y="138" width="78" height="78" rx="20" fill="#FFFFFF"/>
-              <path class="h-gear" data-gear="61,177,24,18,10" fill="none" stroke="#0E1A2B" stroke-width="2.5" stroke-linejoin="round"/>
-              <circle cx="61" cy="177" r="6" fill="#E2A13B"/>
+            <g class="h-chip" font-size="15" font-weight="600" text-anchor="middle" style="font-family:var(--font-display)">
+              <circle cx="240" cy="38" r="15" fill="#0E1A2B" stroke="#E2A13B" stroke-width="1.5"/><text x="240" y="43" fill="#E2A13B">2</text>
+            </g>
+            <g class="h-chip" font-size="15" font-weight="600" text-anchor="middle" style="font-family:var(--font-display)">
+              <circle cx="82" cy="38" r="15" fill="#0E1A2B" stroke="#E2A13B" stroke-width="1.5"/><text x="82" y="43" fill="#E2A13B">3</text>
             </g>
           </svg>
-        </div>
+
+          <table class="sheet__parts">
+            <caption class="visually-hidden">قائمة المنصات</caption>
+            <thead><tr><th scope="col">البند والمنصة</th></tr></thead>
+            <tbody>
+              <tr><td><a data-platform-row="mizan" href="#platforms"><span class="balloon">1</span><span><strong>Mizan</strong><br /><span class="field">هندسة التحكم</span></span><span class="open">افتح</span></a></td></tr>
+              <tr><td><a data-platform-row="marsa" href="#platforms"><span class="balloon">2</span><span><strong>Marsa</strong><br /><span class="field">الإنجليزية التقنية للسيارات</span></span><span class="open">افتح</span></a></td></tr>
+              <tr><td><a data-platform-row="mastara" href="#platforms"><span class="balloon">3</span><span><strong>Mastara</strong><br /><span class="field">الرسم الهندسي والتفاوتات</span></span><span class="open">افتح</span></a></td></tr>
+            </tbody>
+          </table>
+
+          <div class="sheet__title">
+            <div><small>الرسم</small>مهندس+ صفحة المنصات</div>
+            <div><small>المقياس</small>1:1</div>
+            <div><small>الورقة</small>1 / 1</div>
+          </div>
+        </figure>
       </div>
     </section>
 
@@ -540,14 +512,13 @@
     <!-- Each card links to one of the platforms. URLs live in PLATFORM_LINKS (script below). -->
     <section class="section courses" id="platforms" aria-labelledby="platforms-title">
       <div class="container">
-        <div class="section-head" data-reveal>
-          <p class="eyebrow">المنصات</p>
+        <div class="section-head">
           <h2 id="platforms-title">ثلاث منصات. كلها مجانية.</h2>
           <p>اقلب البطاقة لترى ما في كل منصة، ثم افتحها مباشرة وابدأ التعلم.</p>
         </div>
 
         <div class="courses__grid">
-          <article class="course" data-reveal>
+          <article class="course">
             <div class="course__inner">
               <div class="course__face course__front">
                 <div class="course__art" aria-hidden="true">
@@ -559,7 +530,7 @@
                     <circle cx="88" cy="44" r="5" fill="#E2A13B"/>
                     <text x="206" y="54" text-anchor="end" fill="#0E1A2B" fill-opacity=".55" font-size="11" style="direction:ltr;font-family:var(--font-body)">setpoint</text>
                     <rect x="150" y="96" width="56" height="24" rx="12" fill="#0E1A2B"/>
-                    <text x="178" y="112" text-anchor="middle" fill="#F6F3EE" font-size="12" font-weight="600" style="direction:ltr;font-family:var(--font-body)">PID</text>
+                    <text x="178" y="112" text-anchor="middle" fill="#EEF1F0" font-size="12" font-weight="600" style="direction:ltr;font-family:var(--font-body)">PID</text>
                   </svg>
                 </div>
                 <div class="course__meta">
@@ -592,7 +563,7 @@
               </div>
             </div>
           </article>
-          <article class="course" data-reveal>
+          <article class="course">
             <div class="course__inner">
               <div class="course__face course__front">
                 <div class="course__art" aria-hidden="true">
@@ -636,7 +607,7 @@
               </div>
             </div>
           </article>
-          <article class="course" data-reveal>
+          <article class="course">
             <div class="course__inner">
               <div class="course__face course__front">
                 <div class="course__art" aria-hidden="true">
@@ -696,7 +667,6 @@
       <div class="story__stage">
         <div class="container">
           <div class="section-head story__head">
-            <p class="eyebrow">من الفكرة إلى الدورة</p>
             <h2 id="story-title">كيف نصنع منصاتنا، في ثلاث خطوات.</h2>
           </div>
 
@@ -706,7 +676,7 @@
               <svg viewBox="0 0 480 480" fill="none">
                 <defs>
                   <pattern id="storyGrid" width="24" height="24" patternUnits="userSpaceOnUse">
-                    <path d="M24 0H0V24" stroke="#F6F3EE" stroke-opacity=".08"/>
+                    <path d="M24 0H0V24" stroke="#EEF1F0" stroke-opacity=".08"/>
                   </pattern>
                   <radialGradient id="storyGlow" cx="50%" cy="55%" r="55%">
                     <stop offset="0" stop-color="#E2A13B" stop-opacity=".45"/>
@@ -727,12 +697,12 @@
                 <rect class="s-glow" width="480" height="480" fill="url(#storyGlow)"/>
 
                 <!-- Step 1 construction lines (blueprint) -->
-                <g class="s-construct" stroke="#F6F3EE" stroke-opacity=".45" stroke-width="1.2" stroke-dasharray="6 6">
+                <g class="s-construct" stroke="#EEF1F0" stroke-opacity=".45" stroke-width="1.2" stroke-dasharray="6 6">
                   <circle cx="200" cy="270" r="122"/>
                   <circle cx="312" cy="158" r="70"/>
                   <path d="M60 270H340M200 130V410M262 96L362 220"/>
                 </g>
-                <g class="s-construct" fill="#F6F3EE" fill-opacity=".65" font-size="13" style="font-family:var(--font-body)">
+                <g class="s-construct" fill="#EEF1F0" fill-opacity=".65" font-size="13" style="font-family:var(--font-body)">
                   <text x="28" y="446">Ø 204</text>
                   <text x="388" y="96">z = 8</text>
                   <text x="28" y="40" font-size="12" fill-opacity=".45">REV A · SHEET 1/3</text>
@@ -746,10 +716,10 @@
                 <g class="s-gear-big">
                   <path class="s-fill-metal" data-gear="200,270,112,96,14" fill="url(#metal)"/>
                   <path class="s-fill-gold" data-gear="200,270,112,96,14" fill="url(#gold)"/>
-                  <path class="s-draw" data-gear="200,270,112,96,14" stroke="#F6F3EE" stroke-width="2.5" stroke-linejoin="round"/>
-                  <circle class="s-draw" cx="200" cy="270" r="62" stroke="#F6F3EE" stroke-width="2"/>
+                  <path class="s-draw" data-gear="200,270,112,96,14" stroke="#EEF1F0" stroke-width="2.5" stroke-linejoin="round"/>
+                  <circle class="s-draw" cx="200" cy="270" r="62" stroke="#EEF1F0" stroke-width="2"/>
                   <circle class="s-hub" cx="200" cy="270" r="30" fill="#132238"/>
-                  <circle class="s-draw" cx="200" cy="270" r="30" stroke="#F6F3EE" stroke-width="2.5"/>
+                  <circle class="s-draw" cx="200" cy="270" r="30" stroke="#EEF1F0" stroke-width="2.5"/>
                   <g class="s-bolts" fill="#132238">
                     <circle cx="200" cy="224" r="7"/><circle cx="240" cy="247" r="7"/><circle cx="240" cy="293" r="7"/>
                     <circle cx="200" cy="316" r="7"/><circle cx="160" cy="293" r="7"/><circle cx="160" cy="247" r="7"/>
@@ -759,9 +729,9 @@
                 <!-- Small gear -->
                 <g class="s-gear-small">
                   <path class="s-fill-accent" data-gear="312,158,64,52,8" fill="#E2A13B"/>
-                  <path class="s-draw" data-gear="312,158,64,52,8" stroke="#F6F3EE" stroke-width="2.5" stroke-linejoin="round"/>
+                  <path class="s-draw" data-gear="312,158,64,52,8" stroke="#EEF1F0" stroke-width="2.5" stroke-linejoin="round"/>
                   <circle class="s-hub" cx="312" cy="158" r="16" fill="#132238"/>
-                  <circle class="s-draw" cx="312" cy="158" r="16" stroke="#F6F3EE" stroke-width="2.5"/>
+                  <circle class="s-draw" cx="312" cy="158" r="16" stroke="#EEF1F0" stroke-width="2.5"/>
                 </g>
 
                 <!-- Step 3 badge: "certified" -->
@@ -776,19 +746,19 @@
             <div>
               <div class="story__steps">
                 <article class="step">
-                  <span class="step__num">01 · المخطط</span>
+                  <span class="step__num">01 المخطط</span>
                   <h3>نبدأ من منهجك الجامعي.</h3>
                   <p>نختار المواد التي يتعثر فيها طلاب الهندسة، ونحوّلها إلى خريطة تعلّم واضحة: ماذا تتعلم، وبأي ترتيب، ولماذا.</p>
                   <div class="step__tags"><span>هندسة التحكم</span><span>الإنجليزية التقنية</span><span>الرسم الهندسي</span></div>
                 </article>
                 <article class="step">
-                  <span class="step__num">02 · البناء</span>
+                  <span class="step__num">02 البناء</span>
                   <h3>نبني ما تراه وتجرّبه.</h3>
                   <p>بدلاً من صفحات نظرية فقط: سيارة ثلاثية الأبعاد تفككها، محاكي متحكمات تغيّر فيه القيم وترى النتيجة، ونماذج تجميع تفاعلية.</p>
                   <div class="step__tags"><span>نماذج 3D</span><span>محاكاة PID</span><span>تمارين تفاعلية</span></div>
                 </article>
                 <article class="step">
-                  <span class="step__num">03 · الإتقان</span>
+                  <span class="step__num">03 الإتقان</span>
                   <h3>تتدرّب حتى تتقن.</h3>
                   <p>اختبارات قصيرة، مراجعة لأخطائك، بطاقات مفردات وامتحانات تجريبية، ونطوّر كل منصة باستمرار بناءً على ملاحظات الطلاب.</p>
                   <div class="step__tags"><span>اختبارات</span><span>مراجعة الأخطاء</span><span>امتحانات تجريبية</span></div>
@@ -805,7 +775,7 @@
     <section class="stats" aria-label="مهندس+ بالأرقام">
       <div class="container">
         <!-- Final values are in the HTML (shown as-is with reduced motion / no JS) -->
-        <div class="stats__grid" data-reveal>
+        <div class="stats__grid">
           <div class="stat">
             <div class="stat__value"><span class="num" data-count="3">3</span></div>
             <p class="stat__label">منصات مجانية</p>
@@ -829,13 +799,12 @@
     <!-- ============================== 5. FINAL CTA ============================== -->
     <section class="cta" id="start" aria-labelledby="cta-title">
       <div class="container">
-        <div class="cta__card" data-reveal>
+        <div class="cta__card">
           <svg class="cta__grid" width="100%" height="100%" aria-hidden="true">
-            <defs><pattern id="ctaGrid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" fill="none" stroke="#F6F3EE" stroke-opacity=".06"/></pattern></defs>
+            <defs><pattern id="ctaGrid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" fill="none" stroke="#EEF1F0" stroke-opacity=".06"/></pattern></defs>
             <rect width="100%" height="100%" fill="url(#ctaGrid)"/>
           </svg>
-          <p class="eyebrow" style="color: rgb(var(--paper-rgb) / .6)">جاهز؟</p>
-          <h2 id="cta-title" style="margin-top: 14px">اختر منصتك،<br />وابدأ التعلم الآن.</h2>
+          <h2 id="cta-title">اختر منصتك،<br />وابدأ التعلم الآن.</h2>
           <p>كل المنصات مجانية لطلاب الهندسة. احفظ هذه الصفحة لتصل إليها كلها من مكان واحد.</p>
           <div class="cta__links">
             <a class="btn btn--accent" data-platform="mizan" href="#">افتح Mizan</a>
@@ -900,6 +869,12 @@
     /* ---------------------------------------------------------
        2. Platform links (cards + final call to action)
        --------------------------------------------------------- */
+    // Parts-list rows in the hero drawing sheet
+    $$('[data-platform-row]').forEach((a) => {
+      const url = PLATFORM_LINKS[a.dataset.platformRow];
+      if (url) { a.href = url; a.target = '_blank'; a.rel = 'noopener'; }
+    });
+
     $$('[data-platform]').forEach((a) => {
       const url = PLATFORM_LINKS[a.dataset.platform];
       if (url) {
@@ -964,23 +939,14 @@
 
       /* ---- 6a. Hero intro ---- */
       hideStroke('.h-draw');
-      const intro = gsap.timeline({ defaults: { ease: 'expo.out', duration: 1.2 } });
-      intro
-        .fromTo('.hero__badge', { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0 }, 0.1)
-        .fromTo('.hero h1 .line > span', { autoAlpha: 0, yPercent: 110 }, { autoAlpha: 1, yPercent: 0, stagger: 0.12 }, 0.2)
-        .fromTo(['.hero__lead', '.hero__actions', '.hero__trust'], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, stagger: 0.1 }, 0.5)
-        .fromTo('.h-halo', { scale: 0.6, opacity: 0, transformOrigin: '50% 50%' }, { scale: 1, opacity: 1, duration: 1.8 }, 0.1)
-        .fromTo('.h-plate', { y: 60, rotation: 6, opacity: 0, transformOrigin: '50% 50%' }, { y: 0, rotation: 0, opacity: 1, duration: 1.4 }, 0.25)
-        .to('.h-draw', { strokeDashoffset: 0, duration: 1.4, stagger: 0.18, ease: 'power2.inOut' }, 0.7)
-        .fromTo('.h-dim', { opacity: 0 }, { opacity: 1, duration: 0.8 }, 1.6)
-        .fromTo('.h-chip', { scale: 0.4, opacity: 0, transformOrigin: '50% 50%' }, { scale: 1, opacity: 1, duration: 1, stagger: 0.12, ease: 'back.out(1.8)' }, 1.0)
-        .fromTo('.h-progress', { scaleX: 0, transformOrigin: '100% 50%' }, { scaleX: 1, duration: 1.2, ease: 'power3.out' }, 1.6);
-
-      // Gentle idle motion after the intro
-      gsap.utils.toArray('.h-float').forEach((el, i) => {
-        gsap.to(el, { y: i % 2 ? 10 : -10, duration: 3 + i * 0.5, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 2 });
-      });
-      gsap.to('.h-gear', { rotation: 360, svgOrigin: '61 177', duration: 12, ease: 'none', repeat: -1 });
+      // The one orchestrated moment: headline rises, the sheet is drawn, balloons and parts list appear
+      gsap.timeline({ defaults: { ease: 'expo.out', duration: 1.2 } })
+        .fromTo('.hero h1 .line > span', { autoAlpha: 0, yPercent: 110 }, { autoAlpha: 1, yPercent: 0, stagger: 0.12 }, 0.1)
+        .fromTo(['.hero__lead', '.hero__actions', '.hero__note'], { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, stagger: 0.08 }, 0.4)
+        .fromTo('.sheet', { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 1.1 }, 0.2)
+        .to('.h-draw', { strokeDashoffset: 0, duration: 1.2, stagger: 0.06, ease: 'power2.inOut' }, 0.6)
+        .fromTo('.h-chip', { scale: 0.3, opacity: 0, transformOrigin: '50% 50%' }, { scale: 1, opacity: 1, duration: 0.8, stagger: 0.12, ease: 'back.out(2)' }, 1.5)
+        .fromTo('.sheet__parts tbody tr', { autoAlpha: 0, x: 16 }, { autoAlpha: 1, x: 0, duration: 0.8, stagger: 0.1 }, 1.7);
 
       /* ---- 6b. Pinned storytelling (scrubbed) ---- */
       const story = $('.story');
@@ -1051,14 +1017,6 @@
           onUpdate: () => { el.textContent = fmt(state.v); },
           scrollTrigger: { trigger: el, start: 'top 88%', once: true },
         });
-      });
-
-      /* ---- 6d. Soft reveal for section content ---- */
-      gsap.set('[data-reveal]', { autoAlpha: 0, y: 40 });
-      ScrollTrigger.batch('[data-reveal]', {
-        start: 'top 88%',
-        once: true,
-        onEnter: (batch) => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.12, clearProps: 'transform' }),
       });
 
       // Cleanup when the user switches to reduced motion mid-session
